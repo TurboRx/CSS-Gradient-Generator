@@ -1,0 +1,79 @@
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+body.dark-mode #controls {
+    border: 1px solid #30363d;
+}
+
+body.dark-mode #controls input,
+body.dark-mode #controls select,
+body.dark-mode #controls textarea {
+    background-color: #161b22;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+
+body.dark-mode #controls button {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+
+#theme-toggle button {
+    background-color: #f6f8fa;
+    border: 1px solid #d0d7de;
+    padding: 5px 10px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+#theme-toggle button.dark-mode-button {
+    background-color: #21262d;
+    color: #c9d1d9;
+    border: 1px solid #30363d;
+}
+
+#gradient-preview {
+    width: 300px;
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+#controls {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#controls label {
+    display: block;
+    margin-top: 10px;
+}
+
+#controls input,
+#controls select {
+    margin-bottom: 10px;
+}
+
+#css-code {
+    margin-top: 10px;
+}
+.color-stop {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.color-stop input[type="number"] {
+    width: 50px;
+    margin-left: 5px;
+}
+
+#radialControls, #conicControls {
+    display: none;
+}
