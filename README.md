@@ -7,7 +7,7 @@ A sleek and user-friendly tool to create beautiful CSS gradients with a live pre
 ## Website
 
 You can use the tool directly here:  
-[https://turborx.github.io/css-gradient-generator/](https://turborx.github.io/css-gradient-generator/)
+https://turborx.github.io/CSS-Gradient-Generator/
 
 ---
 
