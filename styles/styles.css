@@ -62,7 +62,13 @@ body.dark-mode #controls button {
 
 #css-code {
     margin-top: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    resize: vertical;
 }
+
 .color-stop {
     display: flex;
     align-items: center;
@@ -74,6 +80,14 @@ body.dark-mode #controls button {
     margin-left: 5px;
 }
 
-#radialControls, #conicControls {
+#radialControls,
+#conicControls {
     display: none;
+}
+
+/* Optional: Ensure padding on small screens */
+@media (max-width: 480px) {
+    #gradient-preview {
+        width: 100%;
+    }
 }
