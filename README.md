@@ -55,7 +55,7 @@ Contributions are welcome!
    git commit -m "Your message"
    git push origin feature/your-feature-name
    ```
-4. Open a Pull Request on GitHub
+4. Open a pull request to submit your changes.
 
 ---
 
