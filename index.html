@@ -10,14 +10,14 @@
   <h1 class="title">CSS Gradient Generator</h1>
 
   <div id="theme-toggle">
-    <button id="light-mode">Light Mode</button>
-    <button id="dark-mode">Dark Mode</button>
+    <button id="light-mode" type="button">Light Mode</button>
+    <button id="dark-mode" type="button">Dark Mode</button>
   </div>
 
   <div id="gradient-preview"></div>
 
   <div id="controls">
-    <button id="randomDesign">Random Design</button>
+    <button id="randomDesign" type="button">Random Design</button>
 
     <select id="gradientType">
       <option value="linear-gradient">Linear</option>
@@ -63,19 +63,19 @@
       <div class="color-stop">
         <input type="color" value="#ff0000" />
         <input type="number" class="stop-position" placeholder="%" />
-        <button class="remove-stop">Remove</button>
+        <button class="remove-stop" type="button">Remove</button>
       </div>
       <div class="color-stop">
         <input type="color" value="#0000ff" />
         <input type="number" class="stop-position" placeholder="%" />
-        <button class="remove-stop">Remove</button>
+        <button class="remove-stop" type="button">Remove</button>
       </div>
     </div>
 
-    <button id="addStop">Add Color Stop</button>
+    <button id="addStop" type="button">Add Color Stop</button>
 
     <textarea id="css-code" rows="4" cols="50" readonly></textarea>
-    <button id="copyCode">Copy CSS</button>
+    <button id="copyCode" type="button">Copy CSS</button>
   </div>
 
   <script src="scripts/gradientGenerator.js"></script>
