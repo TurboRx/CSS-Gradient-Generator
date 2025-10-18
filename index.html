@@ -3,42 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Professional CSS Gradient Generator with live preview, multiple gradient types, and instant code generation" />
-  <meta name="keywords" content="CSS, gradient, generator, web design, linear, radial, conic, CSS3" />
-  <meta name="author" content="TurboRx" />
-  
   <title>CSS Gradient Generator - Create Beautiful Gradients with Live Preview</title>
-  
-  <!-- Preload critical resources -->
-  <link rel="preload" href="styles/styles.css" as="style" />
-  <link rel="preload" href="scripts/gradientGenerator.js" as="script" />
-  
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="styles/styles.css" />
-  
-  <!-- Favicon -->
+  <!-- Use aggregated styles to include overrides and Material Icons -->
+  <link rel="stylesheet" href="styles/index.css" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%22100%22 y2=%22100%22><stop offset=%220%25%22 style=%22stop-color:%23ff0080%22/><stop offset=%22100%25%22 style=%22stop-color:%23ff8c00%22/></linearGradient></defs><rect width=%22100%22 height=%22100%22 fill=%22url(%23g)%22/></svg>" />
 </head>
 <body>
   <!-- Skip to main content for accessibility -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
   
-  <!-- Header -->
   <header>
     <h1 class="title">CSS Gradient Generator</h1>
     <p class="subtitle">Create beautiful CSS gradients with live preview and instant code generation</p>
   </header>
 
-  <!-- Theme Toggle -->
   <section class="theme-section" aria-labelledby="theme-heading">
     <h2 id="theme-heading" class="visually-hidden">Theme Settings</h2>
     <div id="theme-toggle" role="group" aria-label="Theme selection">
-      <button id="light-mode" type="button" aria-pressed="false">
-        <span class="icon" aria-hidden="true">☀️</span>
+      <!-- Light/Dark buttons hidden via CSS; theme is controlled by selector below -->
+      <button id="light-mode" type="button" aria-pressed="false" hidden>
+        <span class="material-icon" aria-hidden="true">light_mode</span>
         Light Mode
       </button>
-      <button id="dark-mode" type="button" aria-pressed="false">
-        <span class="icon" aria-hidden="true">🌙</span>
+      <button id="dark-mode" type="button" aria-pressed="false" hidden>
+        <span class="material-icon" aria-hidden="true">dark_mode</span>
         Dark Mode
       </button>
       <label for="theme-select" class="visually-hidden">Theme</label>
@@ -50,47 +38,38 @@
     </div>
   </section>
 
-  <!-- Main Content -->
   <main id="main-content">
-    <!-- Gradient Preview -->
     <section class="preview-section" aria-labelledby="preview-heading">
       <h2 id="preview-heading">Live Preview</h2>
-      <div id="gradient-preview" 
-           role="img" 
-           aria-label="Gradient preview" 
-           tabindex="0"
-           aria-describedby="gradient-description">
+      <div id="gradient-preview" role="img" aria-label="Gradient preview" tabindex="0" aria-describedby="gradient-description">
         <div class="loading-spinner" aria-hidden="true"></div>
       </div>
       <p id="gradient-description" class="visually-hidden">Live preview of your gradient</p>
     </section>
 
-    <!-- Controls -->
     <section class="controls-section" aria-labelledby="controls-heading">
       <h2 id="controls-heading">Gradient Controls</h2>
       
-      <!-- Action Buttons -->
       <div class="action-buttons">
         <button id="randomDesign" type="button" class="btn btn-primary">
-          <span class="icon" aria-hidden="true">🎲</span>
+          <span class="material-icon" aria-hidden="true">casino</span>
           Random Design
         </button>
         <button id="undoBtn" type="button" class="btn btn-secondary" disabled>
-          <span class="icon" aria-hidden="true">↶</span>
+          <span class="material-icon" aria-hidden="true">undo</span>
           Undo
         </button>
         <button id="redoBtn" type="button" class="btn btn-secondary" disabled>
-          <span class="icon" aria-hidden="true">↷</span>
+          <span class="material-icon" aria-hidden="true">redo</span>
           Redo
         </button>
         <button id="resetBtn" type="button" class="btn btn-outline">
-          <span class="icon" aria-hidden="true">🔄</span>
+          <span class="material-icon" aria-hidden="true">restart_alt</span>
           Reset
         </button>
       </div>
 
       <div id="controls">
-        <!-- Gradient Type Selection -->
         <div class="form-group">
           <label for="gradientType">Gradient Type:</label>
           <select id="gradientType" aria-describedby="gradient-type-help">
@@ -104,7 +83,6 @@
           <small id="gradient-type-help">Choose the type of gradient to create</small>
         </div>
 
-        <!-- Linear Gradient Controls -->
         <div id="linearControls" class="gradient-controls active">
           <div class="form-group">
             <label for="angle">Angle (degrees):</label>
@@ -116,7 +94,6 @@
           </div>
         </div>
 
-        <!-- Radial Gradient Controls -->
         <div id="radialControls" class="gradient-controls">
           <div class="form-group">
             <label for="radialShape">Shape:</label>
@@ -147,7 +124,6 @@
           </div>
         </div>
 
-        <!-- Conic Gradient Controls -->
         <div id="conicControls" class="gradient-controls">
           <div class="form-group">
             <label for="conicAngle">Starting Angle (degrees):</label>
@@ -165,7 +141,6 @@
           </div>
         </div>
 
-        <!-- Color Stops -->
         <fieldset class="color-stops-fieldset">
           <legend>Color Stops</legend>
           <div id="colorStops" role="group" aria-label="Color stops list">
@@ -175,7 +150,7 @@
               <label class="visually-hidden" for="position-0">Position 1</label>
               <input type="number" id="position-0" class="stop-position" placeholder="%" min="0" max="100" aria-label="Position 1 (percentage)" />
               <button class="remove-stop btn-icon" type="button" aria-label="Remove color stop 1" disabled>
-                <span aria-hidden="true">&times;</span>
+                <span class="material-icon" aria-hidden="true">close</span>
               </button>
             </div>
             <div class="color-stop" data-stop-index="1">
@@ -184,26 +159,22 @@
               <label class="visually-hidden" for="position-1">Position 2</label>
               <input type="number" id="position-1" class="stop-position" placeholder="%" min="0" max="100" aria-label="Position 2 (percentage)" />
               <button class="remove-stop btn-icon" type="button" aria-label="Remove color stop 2" disabled>
-                <span aria-hidden="true">&times;</span>
+                <span class="material-icon" aria-hidden="true">close</span>
               </button>
             </div>
           </div>
           
           <button id="addStop" type="button" class="btn btn-outline">
-            <span class="icon" aria-hidden="true">+</span>
+            <span class="material-icon" aria-hidden="true">add</span>
             Add Color Stop
           </button>
         </fieldset>
 
-        <!-- Preset Gradients -->
         <fieldset class="presets-fieldset">
           <legend>Preset Gradients</legend>
-          <div id="presetGradients" class="preset-grid" role="group" aria-label="Preset gradient options">
-            <!-- Presets will be dynamically generated -->
-          </div>
+          <div id="presetGradients" class="preset-grid" role="group" aria-label="Preset gradient options"></div>
         </fieldset>
 
-        <!-- Export Options -->
         <fieldset class="export-fieldset">
           <legend>Export Options</legend>
           
@@ -219,25 +190,20 @@
 
           <div class="code-output">
             <label for="css-code" class="code-label">Generated Code:</label>
-            <textarea id="css-code" 
-                      rows="4" 
-                      cols="50" 
-                      readonly 
-                      aria-describedby="css-code-help"
-                      spellcheck="false"></textarea>
+            <textarea id="css-code" rows="4" cols="50" readonly aria-describedby="css-code-help" spellcheck="false"></textarea>
             <small id="css-code-help">Generated CSS code for your gradient</small>
             
             <div class="code-actions">
               <button id="copyCode" type="button" class="btn btn-primary">
-                <span class="icon" aria-hidden="true">📋</span>
+                <span class="material-icon" aria-hidden="true">content_copy</span>
                 Copy Code
               </button>
               <button id="downloadCode" type="button" class="btn btn-secondary">
-                <span class="icon" aria-hidden="true">💾</span>
+                <span class="material-icon" aria-hidden="true">download</span>
                 Download
               </button>
               <button id="shareGradient" type="button" class="btn btn-outline">
-                <span class="icon" aria-hidden="true">🔗</span>
+                <span class="material-icon" aria-hidden="true">share</span>
                 Share
               </button>
             </div>
@@ -247,16 +213,13 @@
     </section>
   </main>
 
-  <!-- Footer -->
   <footer>
     <p>Made with ❤️ by <a href="https://github.com/TurboRx" target="_blank" rel="noopener noreferrer">TurboRx</a></p>
     <p><a href="https://github.com/TurboRx/CSS-Gradient-Generator" target="_blank" rel="noopener noreferrer">View on GitHub</a></p>
   </footer>
 
-  <!-- Toast notifications -->
   <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
-  <!-- Loading overlay -->
   <div id="loading-overlay" class="loading-overlay" aria-hidden="true">
     <div class="loading-content">
       <div class="loading-spinner"></div>
@@ -264,7 +227,7 @@
     </div>
   </div>
 
-  <!-- Scripts: utils first, then presets, then patches, then generator -->
+  <!-- Scripts -->
   <script src="scripts/utils.js"></script>
   <script src="scripts/gradientPresets.js"></script>
   <script src="scripts/patches/themeAndStopsPatch.js"></script>
