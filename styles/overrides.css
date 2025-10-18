@@ -1,29 +1,48 @@
-/* Toast rate limiting and Google Icons + theme selector-only adjustments */
-
-/* Import Google Material Symbols (Outlined) */
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0');
-
-.material-icon {
-  font-family: 'Material Symbols Outlined';
-  font-weight: 400;
-  font-style: normal;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: normal;
-  text-transform: none;
-  display: inline-block;
-  white-space: nowrap;
-  word-wrap: normal;
-  direction: ltr;
-  -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased;
+/* Position compact theme selector in the top-right corner */
+.theme-section {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
 }
 
-/* Slightly increase min display time for toasts and spacing */
-#toast-container {
-  gap: var(--spacing-sm);
+/* Compact select styling */
+#theme-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 4px 24px 4px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color, #ccc);
+  background: var(--surface-2, #fff);
+  color: var(--text-1, #111);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
 }
 
-/* Hide old light/dark buttons when theme selector is present */
-#theme-toggle button#light-mode,
-#theme-toggle button#dark-mode { display: none; }
+/* Dark theme adjustments */
+[data-theme="dark"] #theme-select {
+  background: var(--surface-2, #1e1e1e);
+  color: var(--text-1, #f0f0f0);
+  border-color: var(--border-color, #333);
+}
+
+/* Add a small chevron using a pseudo-element container */
+#theme-toggle { position: relative; display: inline-block; }
+#theme-toggle::after {
+  content: '▾';
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  pointer-events: none;
+  color: currentColor;
+}
+
+/* Reduce corner overlap on mobile */
+@media (max-width: 480px) {
+  .theme-section { top: 8px; right: 8px; }
+  #theme-select { font-size: 11px; padding: 3px 22px 3px 6px; }
+}
