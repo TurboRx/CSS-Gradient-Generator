@@ -1,6 +1,6 @@
 /**
  * Utility functions for the CSS Gradient Generator
- * @version 2.0.3 - Hardened clipboard, validation, URL
+ * @version 2.1.0 - Toast rate limiter, hardened clipboard, validation, URL
  */
 
 'use strict';
@@ -69,11 +69,7 @@ class Utils {
     try {
       const u = new URL(url);
       u.searchParams.forEach((v, k) => {
-        try {
-          params[k] = decodeURIComponent(v);
-        } catch {
-          params[k] = v;
-        }
+        try { params[k] = decodeURIComponent(v); } catch { params[k] = v; }
       });
     } catch {
       const q = url.split('?')[1] || '';
@@ -96,26 +92,70 @@ class Utils {
     } catch {}
   }
 
-  static showToast(message, type = 'info', duration = 3000) {
+  // Toast system with rate-limiting and deduplication
+  static _toastState = { lastAt: 0, minGap: 900, queue: [], showing: 0, maxShowing: 2, dedupeTTL: 1500, recent: new Map() };
+
+  static showToast(message, type = 'info', duration = 2000) {
     const container = document.getElementById('toast-container');
-    if (!container) return null;
+    if (!container || !message) return null;
+
+    // Deduplicate same message within dedupeTTL
+    const now = Date.now();
+    const key = `${type}:${message}`;
+    const last = this._toastState.recent.get(key) || 0;
+    if (now - last < this._toastState.dedupeTTL) return null;
+    this._toastState.recent.set(key, now);
+
+    // Enforce minimum gap between creations
+    const gap = now - this._toastState.lastAt;
+    if (gap < this._toastState.minGap || this._toastState.showing >= this._toastState.maxShowing) {
+      this._toastState.queue.push({ message, type, duration });
+      if (!this._toastState._draining) this._drainToasts();
+      return null;
+    }
+
+    this._toastState.lastAt = now;
+    this._toastState.showing++;
+
     const div = document.createElement('div');
     div.className = `toast ${type}`;
     div.setAttribute('role', 'alert');
-    const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
+
+    const icons = { success: '✓', error: '⨯', warning: '!', info: 'i' };
     div.innerHTML = `
       <div class="toast-icon">${icons[type] || icons.info}</div>
       <div class="toast-content"><div class="toast-message">${this.sanitizeHtml(message)}</div></div>
-      <button class="toast-close" aria-label="Close">&times;</button>
+      <button class="toast-close" aria-label="Close">×</button>
     `;
+
     const close = () => {
-      div.style.animation = 'slideOutRight 0.25s ease';
-      setTimeout(() => div.remove(), 240);
+      div.style.animation = 'slideOutRight 0.2s ease';
+      setTimeout(() => {
+        div.remove();
+        this._toastState.showing = Math.max(0, this._toastState.showing - 1);
+        this._drainToasts();
+      }, 180);
     };
+
     div.querySelector('.toast-close')?.addEventListener('click', close);
     container.appendChild(div);
+
     if (duration > 0) setTimeout(close, duration);
     return div;
+  }
+
+  static _drainToasts() {
+    this._toastState._draining = true;
+    const tick = () => {
+      if (this._toastState.queue.length === 0) { this._toastState._draining = false; return; }
+      const canCreate = (Date.now() - this._toastState.lastAt) >= this._toastState.minGap && this._toastState.showing < this._toastState.maxShowing;
+      if (canCreate) {
+        const next = this._toastState.queue.shift();
+        this.showToast(next.message, next.type, next.duration);
+      }
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
   }
 
   static sanitizeHtml(str) {
@@ -124,8 +164,6 @@ class Utils {
     temp.textContent = str;
     return temp.innerHTML;
   }
-
-  // (Other methods as before...)
 }
 
 window.Utils = Utils;
