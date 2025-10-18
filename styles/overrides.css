@@ -1,48 +1,81 @@
-/* Position compact theme selector in the top-right corner */
-.theme-section {
-  position: fixed;
-  top: 12px;
-  right: 12px;
-  z-index: 1000;
+/* Header container with right-aligned theme selector */
+header.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
 }
 
-/* Compact select styling */
-#theme-select {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
+/* Move theme selector into header area */
+header.site-header .theme-section {
+  position: static;
+  margin-left: auto;
+}
+
+/* Compact theme select */
+header.site-header #theme-select {
   font-size: 12px;
-  line-height: 1.2;
-  padding: 4px 24px 4px 8px;
+  padding: 4px 22px 4px 8px;
   border-radius: 6px;
-  border: 1px solid var(--border-color, #ccc);
-  background: var(--surface-2, #fff);
-  color: var(--text-1, #111);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
 }
 
-/* Dark theme adjustments */
-[data-theme="dark"] #theme-select {
-  background: var(--surface-2, #1e1e1e);
-  color: var(--text-1, #f0f0f0);
+/* Layout fixes: prevent overflow and broken grids */
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px;
+}
+
+.preview-section #gradient-preview {
+  min-height: 220px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color, #ddd);
+}
+
+.controls-section .action-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Controls layout responsive grid */
+#controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Color stops list responsive */
+.color-stops-fieldset #colorStops {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.color-stop {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Code area wraps nicely */
+.code-output textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Mobile optimization */
+@media (max-width: 768px) {
+  #controls { grid-template-columns: 1fr; }
+  .color-stops-fieldset #colorStops { grid-template-columns: 1fr; }
+  header.site-header { padding: 10px 12px; }
+  .preview-section #gradient-preview { min-height: 180px; }
+}
+
+/* Dark theme polish */
+[data-theme="dark"] .preview-section #gradient-preview {
   border-color: var(--border-color, #333);
-}
-
-/* Add a small chevron using a pseudo-element container */
-#theme-toggle { position: relative; display: inline-block; }
-#theme-toggle::after {
-  content: '▾';
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 10px;
-  pointer-events: none;
-  color: currentColor;
-}
-
-/* Reduce corner overlap on mobile */
-@media (max-width: 480px) {
-  .theme-section { top: 8px; right: 8px; }
-  #theme-select { font-size: 11px; padding: 3px 22px 3px 6px; }
 }
