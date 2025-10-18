@@ -16,8 +16,8 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/styles.css" />
   
-  <!-- Favicon and PWA manifest -->
-  <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%22100%22 y2=%22100%22><stop offset=%220%25%22 style=%22stop-color:%23ff0080%22/><stop offset=%22100%25%22 style=%22stop-color:%23ff8c00%22/></linearGradient></defs><rect width=%22100%22 height=%22100%22 fill=%22url(%23g)%22/></svg>" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%22100%22 y2=%22100%22><stop offset=%220%25%22 style=%22stop-color:%23ff0080%22/><stop offset=%22100%25%22 style=%22stop-color:%23ff8c00%22/></linearGradient></defs><rect width=%22100%22 height=%22100%22 fill=%22url(%23g)%22/></svg>" />
 </head>
 <body>
   <!-- Skip to main content for accessibility -->
@@ -99,7 +99,7 @@
         </div>
 
         <!-- Linear Gradient Controls -->
-        <div id="linearControls" class="gradient-controls">
+        <div id="linearControls" class="gradient-controls active">
           <div class="form-group">
             <label for="angle">Angle (degrees):</label>
             <div class="input-with-slider">
@@ -169,7 +169,7 @@
               <label class="visually-hidden" for="position-0">Position 1</label>
               <input type="number" id="position-0" class="stop-position" placeholder="%" min="0" max="100" aria-label="Position 1 (percentage)" />
               <button class="remove-stop btn-icon" type="button" aria-label="Remove color stop 1" disabled>
-                <span aria-hidden="true">×</span>
+                <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="color-stop" data-stop-index="1">
@@ -178,7 +178,7 @@
               <label class="visually-hidden" for="position-1">Position 2</label>
               <input type="number" id="position-1" class="stop-position" placeholder="%" min="0" max="100" aria-label="Position 2 (percentage)" />
               <button class="remove-stop btn-icon" type="button" aria-label="Remove color stop 2" disabled>
-                <span aria-hidden="true">×</span>
+                <span aria-hidden="true">&times;</span>
               </button>
             </div>
           </div>
@@ -262,16 +262,5 @@
   <script src="scripts/utils.js"></script>
   <script src="scripts/gradientPresets.js"></script>
   <script src="scripts/gradientGenerator.js"></script>
-  
-  <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => console.log('SW registered: ', registration))
-          .catch(registrationError => console.log('SW registration failed: ', registrationError));
-      });
-    }
-  </script>
 </body>
 </html>
