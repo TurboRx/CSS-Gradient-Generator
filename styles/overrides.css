@@ -17,3 +17,18 @@ header.site-header { margin-top: 0 !important; }
 
 /* 4) Prevent preview bleed */
 #gradient-preview { box-sizing: border-box; overflow: hidden; }
+
+/* 5) Fix doubled button label/layout and sizing */
+.btn { white-space: nowrap; }
+.material-icon { display: inline-block; width: 1.2em; height: 1.2em; line-height: 1; font-style: normal; }
+.btn .material-icon + * { margin-left: 6px; }
+.action-buttons .btn { font-size: var(--font-size-sm); padding: var(--spacing-sm) var(--spacing-md); }
+
+/* 6) Theme selector size back to compact */
+#theme-select { font-size: 0.875rem; padding: 6px 10px; height: 34px; min-width: 120px; border-radius: 6px; }
+#theme-toggle { gap: 8px; }
+
+/* On mobile keep it small */
+@media (max-width: 480px) {
+  #theme-select { font-size: 0.8125rem; padding: 4px 8px; height: 32px; min-width: 110px; }
+}
