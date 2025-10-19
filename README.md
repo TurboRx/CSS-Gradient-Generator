@@ -220,7 +220,7 @@ If you encounter issues:
 2. **Review console errors**: Open browser DevTools (F12)
 3. **Try different browsers**: Test in Chrome, Firefox, Safari
 4. **Check network**: Ensure internet access for external resources
-5. **Create an issue**: Report bugs on the Issues page
+5. **Create an issue**: Report bugs on [GitHub Issues](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
 
 ## 🤝 Contributing
 
