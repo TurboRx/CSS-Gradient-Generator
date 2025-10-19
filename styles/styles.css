@@ -161,7 +161,10 @@ h1, h2, h3, h4, h5, h6 {
 
 /* ===== LAYOUT ===== */
 
-header {
+.site-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: var(--spacing-xl);
 }
 
@@ -218,7 +221,7 @@ section {
   margin-bottom: var(--spacing-lg);
 }
 
-#theme-toggle button {
+#theme-toggle .btn {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
@@ -231,23 +234,41 @@ section {
   font-size: var(--font-size-sm);
   font-weight: 500;
   transition: all var(--transition-fast);
+  text-decoration: none;
 }
 
-#theme-toggle button:hover {
+#theme-toggle .btn:hover {
   border-color: var(--accent-primary);
   transform: translateY(-2px);
   box-shadow: var(--shadow-sm);
 }
 
-#theme-toggle button[aria-pressed="true"] {
+#theme-toggle .btn[aria-pressed="true"] {
   background: var(--accent-primary);
   border-color: var(--accent-primary);
   color: white;
 }
 
-.icon {
-  display: inline-block;
+/* Material Icons Support */
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
   font-size: 1.1em;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Fallback for Material Icons */
+.material-icons::before {
+  content: attr(data-icon);
 }
 
 /* ===== GRADIENT PREVIEW ===== */
@@ -471,6 +492,17 @@ legend {
   to {
     opacity: 1;
     transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
   }
 }
 
@@ -803,6 +835,10 @@ legend {
     padding: var(--spacing-sm);
   }
   
+  .site-header {
+    margin-bottom: var(--spacing-lg);
+  }
+  
   .title {
     font-size: var(--font-size-xxl);
   }
@@ -836,6 +872,7 @@ legend {
   .action-buttons .btn {
     flex: 1;
     justify-content: center;
+    min-width: 0;
   }
   
   .code-actions {
@@ -855,6 +892,11 @@ legend {
     right: var(--spacing-sm);
     max-width: none;
   }
+  
+  #theme-toggle {
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
 }
 
 @media (max-width: 480px) {
@@ -862,14 +904,14 @@ legend {
     font-size: var(--font-size-xl);
   }
   
-  #theme-toggle {
-    flex-direction: column;
-    align-items: center;
+  #theme-toggle .btn {
+    width: 120px;
+    justify-content: center;
   }
   
-  #theme-toggle button {
-    width: 150px;
-    justify-content: center;
+  .action-buttons {
+    grid-template-columns: 1fr 1fr;
+    display: grid;
   }
 }
 
