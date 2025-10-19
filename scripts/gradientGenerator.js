@@ -2,7 +2,7 @@
  * Enhanced CSS Gradient Generator
  * Professional gradient generator with modern features and accessibility
  * @author TurboRx
- * @version 2.0.1
+ * @version 2.1.0
  */
 
 'use strict';
@@ -22,10 +22,10 @@ class GradientGenerator {
     this.loadStateFromURL();
     this.generateGradient();
     
-    // Show welcome message after a delay
+    // Show welcome message after a delay (only if toast system available)
     setTimeout(() => {
-      if (typeof Utils !== 'undefined' && Utils.showToast) {
-        Utils.showToast('Welcome to CSS Gradient Generator 2.0! 🎨', 'success', 3000);
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.welcome();
       }
     }, 1000);
   }
@@ -126,7 +126,7 @@ class GradientGenerator {
         });
       }
       
-      // Linear controls
+      // Linear controls - NO TOASTS for routine control changes
       if (this.angle && this.angleSlider) {
         this.angle.addEventListener('input', (e) => {
           this.angleSlider.value = e.target.value;
@@ -143,7 +143,7 @@ class GradientGenerator {
         this.angleSlider.addEventListener('change', () => this.saveToHistory());
       }
       
-      // Radial controls
+      // Radial controls - NO TOASTS for routine control changes
       if (this.radialShape) {
         this.radialShape.addEventListener('change', () => {
           this.debouncedGenerate();
@@ -161,7 +161,7 @@ class GradientGenerator {
         this.radialPosition.addEventListener('change', () => this.saveToHistory());
       }
       
-      // Conic controls
+      // Conic controls - NO TOASTS for routine control changes
       if (this.conicAngle && this.conicAngleSlider) {
         this.conicAngle.addEventListener('input', (e) => {
           this.conicAngleSlider.value = e.target.value;
@@ -184,6 +184,7 @@ class GradientGenerator {
       
       // Action buttons
       if (this.addStopBtn) this.addStopBtn.addEventListener('click', () => this.addColorStop());
+      // NO TOAST for Random Design as per requirements
       if (this.randomBtn) this.randomBtn.addEventListener('click', () => this.generateRandomGradient());
       if (this.undoBtn) this.undoBtn.addEventListener('click', () => this.undo());
       if (this.redoBtn) this.redoBtn.addEventListener('click', () => this.redo());
@@ -414,6 +415,7 @@ class GradientGenerator {
 
   /**
    * Add new color stop with better error handling
+   * NO TOAST for Add Color Stop as per requirements
    */
   addColorStop() {
     try {
@@ -456,10 +458,12 @@ class GradientGenerator {
         }, 100);
       }
       
-      this.showSuccess('Color stop added');
+      // NO TOAST for add color stop
     } catch (error) {
       console.error('Error adding color stop:', error);
-      this.showError('Failed to add color stop');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.colorStopError();
+      }
     }
   }
 
@@ -486,6 +490,7 @@ class GradientGenerator {
       const positionInput = stopElement.querySelector('.stop-position');
       const removeBtn = stopElement.querySelector('.remove-stop');
       
+      // NO TOASTS for routine color/position changes
       if (colorInput) {
         colorInput.addEventListener('input', this.debouncedGenerate);
         colorInput.addEventListener('change', () => this.saveToHistory());
@@ -518,6 +523,7 @@ class GradientGenerator {
 
   /**
    * Remove color stop with validation
+   * NO TOAST for Remove Color Stop as per requirements
    * @param {Element} stopElement - Color stop element to remove
    */
   removeColorStop(stopElement) {
@@ -526,7 +532,9 @@ class GradientGenerator {
       
       const stops = this.colorStops.querySelectorAll('.color-stop');
       if (stops.length <= 2) {
-        this.showWarning('At least 2 color stops are required');
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.invalidInput('color stops');
+        }
         return;
       }
       
@@ -537,12 +545,14 @@ class GradientGenerator {
           this.updateRemoveButtons();
           this.debouncedGenerate();
           this.saveToHistory();
-          this.showSuccess('Color stop removed');
+          // NO TOAST for remove color stop
         }
       }, 300);
     } catch (error) {
       console.error('Error removing color stop:', error);
-      this.showError('Failed to remove color stop');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.colorStopError();
+      }
     }
   }
 
@@ -563,6 +573,7 @@ class GradientGenerator {
 
   /**
    * Generate random gradient with error handling
+   * NO TOAST for Random Design as per requirements
    */
   generateRandomGradient() {
     try {
@@ -639,15 +650,18 @@ class GradientGenerator {
       this.updateControls();
       this.saveToHistory();
       
-      this.showSuccess('Random gradient generated! 🎲');
+      // NO TOAST for random gradient generation
     } catch (error) {
       console.error('Error generating random gradient:', error);
-      this.showError('Failed to generate random gradient');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.generalError('Failed to generate random gradient');
+      }
     }
   }
 
   /**
    * Apply gradient preset with error handling
+   * SHOW TOAST for preset selections as per requirements
    * @param {Object} preset - Preset configuration
    */
   applyPreset(preset) {
@@ -710,9 +724,18 @@ class GradientGenerator {
       this.updateRemoveButtons();
       this.updateControls();
       this.saveToHistory();
+      
+      // SHOW TOAST for preset application
+      if (typeof gradientToasts !== 'undefined') {
+        const presetName = preset.name || 'Gradient';
+        const category = preset.category || 'Custom';
+        gradientToasts.presetApplied(presetName, category);
+      }
     } catch (error) {
       console.error('Error applying preset:', error);
-      this.showError('Failed to apply preset gradient');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.generalError('Failed to apply preset gradient');
+      }
     }
   }
 
@@ -758,6 +781,9 @@ class GradientGenerator {
       console.error('Error updating export code:', error);
       if (this.cssCode) {
         this.cssCode.value = 'Error generating code. Please try again.';
+      }
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.generalError('Failed to update export code');
       }
     }
   }
@@ -813,6 +839,7 @@ ${stops.map((stop, index) => {
 
   /**
    * Copy code to clipboard
+   * SHOW TOAST for copy success/error as per requirements
    */
   async copyCode() {
     if (!this.cssCode) return;
@@ -820,7 +847,11 @@ ${stops.map((stop, index) => {
     try {
       const success = await this.copyToClipboard(this.cssCode.value);
       if (success) {
-        this.showSuccess('Code copied to clipboard! 📋');
+        // SHOW TOAST for copy success
+        if (typeof gradientToasts !== 'undefined') {
+          const format = this.exportFormat ? this.exportFormat.value.toUpperCase() : 'CSS';
+          gradientToasts.copied(format);
+        }
         
         // Visual feedback
         if (this.copyBtn) {
@@ -831,11 +862,16 @@ ${stops.map((stop, index) => {
           }, 2000);
         }
       } else {
-        this.showError('Failed to copy code. Please try selecting and copying manually.');
+        // SHOW TOAST for copy error
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.copyError();
+        }
       }
     } catch (error) {
       console.error('Error copying code:', error);
-      this.showError('Failed to copy code');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.copyError();
+      }
     }
   }
 
@@ -874,6 +910,7 @@ ${stops.map((stop, index) => {
 
   /**
    * Download code as file
+   * SHOW TOAST for download success/error as per requirements
    */
   downloadCode() {
     if (!this.cssCode || !this.exportFormat) return;
@@ -901,10 +938,16 @@ ${stops.map((stop, index) => {
       const mimeType = mimeTypes[format] || 'text/plain';
       
       this.downloadFile(content, filename, mimeType);
-      this.showSuccess(`Downloaded as ${filename}`);
+      
+      // SHOW TOAST for download success
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.downloaded(filename);
+      }
     } catch (error) {
       console.error('Error downloading file:', error);
-      this.showError('Failed to download file');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.downloadError();
+      }
     }
   }
 
@@ -938,6 +981,7 @@ ${stops.map((stop, index) => {
 
   /**
    * Share gradient via URL
+   * SHOW TOAST for share success/error as per requirements
    */
   shareGradient() {
     try {
@@ -949,7 +993,10 @@ ${stops.map((stop, index) => {
           text: 'Check out this awesome gradient I created!',
           url: url
         }).then(() => {
-          this.showSuccess('Gradient shared successfully! 🔗');
+          // SHOW TOAST for share success
+          if (typeof gradientToasts !== 'undefined') {
+            gradientToasts.shared();
+          }
         }).catch(() => {
           this.fallbackShare(url);
         });
@@ -958,7 +1005,9 @@ ${stops.map((stop, index) => {
       }
     } catch (error) {
       console.error('Error sharing:', error);
-      this.showError('Failed to share gradient');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.shareError();
+      }
     }
   }
 
@@ -969,9 +1018,15 @@ ${stops.map((stop, index) => {
   async fallbackShare(url) {
     const success = await this.copyToClipboard(url);
     if (success) {
-      this.showSuccess('Gradient URL copied to clipboard! Share it with others! 🔗');
+      // SHOW TOAST for share success (URL copied)
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.shared();
+      }
     } else {
-      this.showWarning('Unable to share automatically. Please copy the URL from your browser address bar.');
+      // SHOW TOAST for share error
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.shareError();
+      }
     }
   }
 
@@ -1094,6 +1149,7 @@ ${stops.map((stop, index) => {
 
   /**
    * Undo last action
+   * SHOW TOAST for undo success/limit as per requirements
    */
   undo() {
     try {
@@ -1102,16 +1158,28 @@ ${stops.map((stop, index) => {
         const state = JSON.parse(this.history[this.historyIndex]);
         this.restoreState(state);
         this.updateHistoryButtons();
-        this.showInfo('Undid last action');
+        
+        // SHOW TOAST for undo success
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.undoApplied();
+        }
+      } else {
+        // SHOW TOAST for undo limit
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.undoLimit();
+        }
       }
     } catch (error) {
       console.error('Error during undo:', error);
-      this.showError('Failed to undo action');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.generalError('Failed to undo action');
+      }
     }
   }
 
   /**
    * Redo last undone action
+   * SHOW TOAST for redo success/limit as per requirements
    */
   redo() {
     try {
@@ -1120,11 +1188,22 @@ ${stops.map((stop, index) => {
         const state = JSON.parse(this.history[this.historyIndex]);
         this.restoreState(state);
         this.updateHistoryButtons();
-        this.showInfo('Redid last action');
+        
+        // SHOW TOAST for redo success
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.redoApplied();
+        }
+      } else {
+        // SHOW TOAST for redo limit
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.redoLimit();
+        }
       }
     } catch (error) {
       console.error('Error during redo:', error);
-      this.showError('Failed to redo action');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.generalError('Failed to redo action');
+      }
     }
   }
 
@@ -1142,6 +1221,7 @@ ${stops.map((stop, index) => {
 
   /**
    * Reset gradient to default state
+   * SHOW TOAST for reset as per requirements
    */
   resetGradient() {
     try {
@@ -1194,11 +1274,16 @@ ${stops.map((stop, index) => {
         this.updateControls();
         this.saveToHistory();
         
-        this.showInfo('Gradient reset to default');
+        // SHOW TOAST for reset
+        if (typeof gradientToasts !== 'undefined') {
+          gradientToasts.reset();
+        }
       }
     } catch (error) {
       console.error('Error resetting gradient:', error);
-      this.showError('Failed to reset gradient');
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.generalError('Failed to reset gradient');
+      }
     }
   }
 
@@ -1414,7 +1499,9 @@ ${stops.map((stop, index) => {
    * @param {string} message - Error message
    */
   showError(message) {
-    if (typeof Utils !== 'undefined' && Utils.showToast) {
+    if (typeof gradientToasts !== 'undefined') {
+      gradientToasts.generalError(message);
+    } else if (typeof Utils !== 'undefined' && Utils.showToast) {
       Utils.showToast(message, 'error', 4000);
     } else {
       console.error(message);
@@ -1427,7 +1514,9 @@ ${stops.map((stop, index) => {
    * @param {string} message - Success message
    */
   showSuccess(message) {
-    if (typeof Utils !== 'undefined' && Utils.showToast) {
+    if (typeof gradientToasts !== 'undefined') {
+      gradientToasts.success(message);
+    } else if (typeof Utils !== 'undefined' && Utils.showToast) {
       Utils.showToast(message, 'success', 2000);
     } else {
       console.log(message);
@@ -1439,7 +1528,9 @@ ${stops.map((stop, index) => {
    * @param {string} message - Warning message
    */
   showWarning(message) {
-    if (typeof Utils !== 'undefined' && Utils.showToast) {
+    if (typeof gradientToasts !== 'undefined') {
+      gradientToasts.warning(message);
+    } else if (typeof Utils !== 'undefined' && Utils.showToast) {
       Utils.showToast(message, 'warning', 3000);
     } else {
       console.warn(message);
@@ -1452,7 +1543,9 @@ ${stops.map((stop, index) => {
    * @param {string} message - Info message
    */
   showInfo(message) {
-    if (typeof Utils !== 'undefined' && Utils.showToast) {
+    if (typeof gradientToasts !== 'undefined') {
+      gradientToasts.info(message);
+    } else if (typeof Utils !== 'undefined' && Utils.showToast) {
       Utils.showToast(message, 'info', 2000);
     } else {
       console.log(message);
