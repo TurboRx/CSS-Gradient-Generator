@@ -177,19 +177,55 @@ class ToastManager {
                     background-color: var(--bg-hover-dark, rgba(255, 255, 255, 0.1));
                 }
                 
-                /* Mobile responsive */
+                /* Mobile responsive - FIX FOR TOP SPACING ISSUE */
                 @media (max-width: 768px) {
                     #toast-container {
+                        position: fixed;
                         top: 10px;
-                        right: 10px;
                         left: 10px;
+                        right: 10px;
                         max-width: none;
+                        width: calc(100% - 20px);
+                        z-index: 10000;
                     }
                     
                     .toast {
                         min-width: auto;
                         max-width: none;
+                        width: 100%;
                         margin-bottom: 8px;
+                        transform: translateY(-100%);
+                    }
+                    
+                    .toast.show {
+                        transform: translateY(0);
+                    }
+                    
+                    .toast.hide {
+                        transform: translateY(-100%);
+                    }
+                }
+                
+                /* Extra small screens */
+                @media (max-width: 480px) {
+                    #toast-container {
+                        top: 8px;
+                        left: 8px;
+                        right: 8px;
+                        width: calc(100% - 16px);
+                    }
+                    
+                    .toast {
+                        padding: 10px 12px;
+                        font-size: 13px;
+                    }
+                    
+                    .toast-title {
+                        font-size: 13px;
+                    }
+                    
+                    .toast-message {
+                        font-size: 12px;
                     }
                 }
                 
@@ -201,6 +237,22 @@ class ToastManager {
                     
                     .toast-progress {
                         transition: none;
+                    }
+                }
+                
+                /* Ensure toasts don't interfere with page layout */
+                #toast-container:empty {
+                    display: none;
+                }
+                
+                /* Safe area support for mobile devices with notches */
+                @supports (padding: max(0px)) {
+                    @media (max-width: 768px) {
+                        #toast-container {
+                            top: max(10px, env(safe-area-inset-top));
+                            left: max(10px, env(safe-area-inset-left));
+                            right: max(10px, env(safe-area-inset-right));
+                        }
                     }
                 }
             `;
