@@ -2,7 +2,7 @@
  * Enhanced CSS Gradient Generator
  * Professional gradient generator with modern features and accessibility
  * @author TurboRx
- * @version 2.1.1
+ * @version 2.1.0
  */
 
 'use strict';
@@ -22,71 +22,17 @@ class GradientGenerator {
     this.loadStateFromURL();
     this.generateGradient();
     
-    // Welcome toast is owned by toastNotifications.js only (avoid duplicates)
+    // Show welcome message after a delay (only if toast system available)
+    setTimeout(() => {
+      if (typeof gradientToasts !== 'undefined') {
+        gradientToasts.welcome();
+      }
+    }, 1000);
   }
 
-  /**
-   * Initialize DOM elements with null checks
-   */
-  initializeElements() {
-    // Core elements
-    this.preview = document.getElementById('gradient-preview');
-    this.gradientType = document.getElementById('gradientType');
-    this.cssCode = document.getElementById('css-code');
-    
-    // Control containers
-    this.linearControls = document.getElementById('linearControls');
-    this.radialControls = document.getElementById('radialControls');
-    this.conicControls = document.getElementById('conicControls');
-    
-    // Linear controls
-    this.angle = document.getElementById('angle');
-    this.angleSlider = document.getElementById('angleSlider');
-    
-    // Radial controls
-    this.radialShape = document.getElementById('radialShape');
-    this.radialSize = document.getElementById('radialSize');
-    this.radialPosition = document.getElementById('radialPosition');
-    
-    // Conic controls
-    this.conicAngle = document.getElementById('conicAngle');
-    this.conicAngleSlider = document.getElementById('conicAngleSlider');
-    this.conicPosition = document.getElementById('conicPosition');
-    
-    // Color stops and actions
-    this.colorStops = document.getElementById('colorStops');
-    this.addStopBtn = document.getElementById('addStop');
-    
-    // Action buttons
-    this.randomBtn = document.getElementById('randomDesign');
-    this.undoBtn = document.getElementById('undoBtn');
-    this.redoBtn = document.getElementById('redoBtn');
-    this.resetBtn = document.getElementById('resetBtn');
-    
-    // Export controls
-    this.exportFormat = document.getElementById('exportFormat');
-    this.copyBtn = document.getElementById('copyCode');
-    this.downloadBtn = document.getElementById('downloadCode');
-    this.shareBtn = document.getElementById('shareGradient');
-    
-    // Theme controls
-    this.lightModeBtn = document.getElementById('light-mode');
-    this.darkModeBtn = document.getElementById('dark-mode');
-    
-    // Presets container
-    this.presetsContainer = document.getElementById('presetGradients');
-    
-    // Check for required elements
-    if (!this.preview || !this.gradientType || !this.colorStops) {
-      console.error('Required DOM elements not found');
-      this.showError('Failed to initialize. Please refresh the page.');
-    }
-  }
-
-  // ... rest of file unchanged ...
+  // ... keep existing implementation below ...
 }
 
-// Initialize the application when DOM is loaded
 function initializeGradientGenerator() {
   try {
     if (document.readyState === 'loading') {
@@ -102,10 +48,8 @@ function initializeGradientGenerator() {
   }
 }
 
-// Initialize the app
 initializeGradientGenerator();
 
-// Add CSS animations for slide effects
 if (!document.getElementById('gradient-animations')) {
   const style = document.createElement('style');
   style.id = 'gradient-animations';
