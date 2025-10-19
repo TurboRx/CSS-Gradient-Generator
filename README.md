@@ -13,6 +13,7 @@ A sleek and user-friendly tool to create beautiful CSS gradients with a live pre
 - [Troubleshooting](#-troubleshooting)
 - [Contributing](#-contributing)
 - [License](#-license)
+- [Developer and Maintainer](#-developer-and-maintainer)
 
 ## 🌐 Website
 
@@ -220,7 +221,7 @@ If you encounter issues:
 2. **Review console errors**: Open browser DevTools (F12)
 3. **Try different browsers**: Test in Chrome, Firefox, Safari
 4. **Check network**: Ensure internet access for external resources
-5. **Create an issue**: Report bugs on [GitHub Issues](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
+5. **Create an issue**: Report bugs on the Issues page
 
 ## 🤝 Contributing
 
@@ -276,3 +277,12 @@ This project is licensed under the [MIT License](LICENSE). Feel free to use, mod
 **Made with ❤️ for the web development community**
 
 [Live Demo](https://turborx.github.io/CSS-Gradient-Generator/) | [Test Suite](https://turborx.github.io/CSS-Gradient-Generator/test.html)
+
+## 👨‍💻 Developer and Maintainer
+
+**TurboRx** - [GitHub Profile](https://github.com/TurboRx)
+
+### Connect
+- 🐛 **Issues**: [Report bugs or request features](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
+- 🌟 **Star**: Show your support by starring the repository
+- 🌴 **Fork**: Create your own version
