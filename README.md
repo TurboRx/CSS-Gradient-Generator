@@ -2,6 +2,18 @@
 
 A sleek and user-friendly tool to create beautiful CSS gradients with a live preview and instantly copyable code.
 
+## 📚 Table of Contents
+
+- [Features](#-features)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Keyboard Shortcuts](#-keyboard-shortcuts)
+- [Export Formats](#-export-formats)
+- [Browser Support](#-browser-support)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
+
 ## 🌐 Website
 
 You can use the tool directly here: [https://turborx.github.io/CSS-Gradient-Generator/](https://turborx.github.io/CSS-Gradient-Generator/)
@@ -25,38 +37,6 @@ To verify all functionality works correctly, visit: [test.html](https://turborx.
 - **Keyboard shortcuts** for power users
 - **Fully accessible** with ARIA support
 - **Mobile responsive** design
-
-## 🚀 Recent Fixes & Improvements
-
-### Version 2.1.1 - Bug Fixes
-- ✅ **Fixed CSS import issue**: Removed reference to missing `overrides.css` file
-- ✅ **Enhanced theme toggle**: Proper button styling and functionality
-- ✅ **Added Material Icons**: Optimized loading with preload and fallback
-- ✅ **Improved accessibility**: Better ARIA labels and keyboard navigation
-- ✅ **Enhanced responsive design**: Better mobile experience
-- ✅ **Performance optimizations**: Resource preloading and efficient loading
-- ✅ **Added comprehensive testing**: Test suite to verify functionality
-
-### Technical Improvements
-- Fixed broken CSS imports
-- Standardized theme toggle implementation
-- Added proper Material Icons integration
-- Enhanced error handling in JavaScript
-- Improved code structure and documentation
-- Added fallback mechanisms for better compatibility
-
-## 📚 Table of Contents
-
-- [Features](#-features)
-- [Recent Fixes](#-recent-fixes--improvements)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Keyboard Shortcuts](#-keyboard-shortcuts)
-- [Export Formats](#-export-formats)
-- [Browser Support](#-browser-support)
-- [Troubleshooting](#-troubleshooting)
-- [Contributing](#-contributing)
-- [License](#-license)
 
 ## 💻 Installation
 
@@ -240,7 +220,7 @@ If you encounter issues:
 2. **Review console errors**: Open browser DevTools (F12)
 3. **Try different browsers**: Test in Chrome, Firefox, Safari
 4. **Check network**: Ensure internet access for external resources
-5. **Create an issue**: Report bugs on [GitHub Issues](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
+5. **Create an issue**: Report bugs on the Issues page
 
 ## 🤝 Contributing
 
@@ -289,43 +269,10 @@ When reporting bugs:
 
 ## 📜 License
 
-This project is licensed under the **MIT License**. Feel free to use, modify, and distribute as needed.
-
-```
-MIT License
-
-Copyright (c) 2024 TurboRx
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMplied, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-## 👨‍💻 Developer and Maintainer
-
-**TurboRx** - [GitHub Profile](https://github.com/TurboRx)
-
-### Connect
-- 🐛 **Issues**: [Report bugs or request features](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
-- 🌟 **Star**: Show your support by starring the repository
-- 🌴 **Fork**: Create your own version
+This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute as needed.
 
 ---
 
 **Made with ❤️ for the web development community**
 
-[Live Demo](https://turborx.github.io/CSS-Gradient-Generator/) | [Test Suite](https://turborx.github.io/CSS-Gradient-Generator/test.html) | [GitHub](https://github.com/TurboRx/CSS-Gradient-Generator)
+[Live Demo](https://turborx.github.io/CSS-Gradient-Generator/) | [Test Suite](https://turborx.github.io/CSS-Gradient-Generator/test.html)
