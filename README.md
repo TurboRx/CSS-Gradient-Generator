@@ -2,15 +2,13 @@
 
 A sleek and user-friendly tool to create beautiful CSS gradients with a live preview and instantly copyable code.
 
-> See the latest updates: https://github.com/TurboRx/CSS-Gradient-Generator#-recent-fixes--improvements
-
 ## 🌐 Website
 
-You can use the tool directly here: https://turborx.github.io/CSS-Gradient-Generator/
+You can use the tool directly here: [https://turborx.github.io/CSS-Gradient-Generator/](https://turborx.github.io/CSS-Gradient-Generator/)
 
 ## 🛠️ Testing
 
-To verify all functionality works correctly, visit: test.html
+To verify all functionality works correctly, visit: [test.html](https://turborx.github.io/CSS-Gradient-Generator/test.html)
 
 ## 🎆 Features
 
@@ -28,54 +26,66 @@ To verify all functionality works correctly, visit: test.html
 - **Fully accessible** with ARIA support
 - **Mobile responsive** design
 
+## 🚀 Recent Fixes & Improvements
+
+### Version 2.1.1 - Bug Fixes
+- ✅ **Fixed CSS import issue**: Removed reference to missing `overrides.css` file
+- ✅ **Enhanced theme toggle**: Proper button styling and functionality
+- ✅ **Added Material Icons**: Optimized loading with preload and fallback
+- ✅ **Improved accessibility**: Better ARIA labels and keyboard navigation
+- ✅ **Enhanced responsive design**: Better mobile experience
+- ✅ **Performance optimizations**: Resource preloading and efficient loading
+- ✅ **Added comprehensive testing**: Test suite to verify functionality
+
+### Technical Improvements
+- Fixed broken CSS imports
+- Standardized theme toggle implementation
+- Added proper Material Icons integration
+- Enhanced error handling in JavaScript
+- Improved code structure and documentation
+- Added fallback mechanisms for better compatibility
+
 ## 📚 Table of Contents
 
-- Features
-- Installation
-- Usage
-- Keyboard Shortcuts
-- Export Formats
-- Browser Support
-- Troubleshooting
-- Contributing
-- License
+- [Features](#-features)
+- [Recent Fixes](#-recent-fixes--improvements)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Keyboard Shortcuts](#-keyboard-shortcuts)
+- [Export Formats](#-export-formats)
+- [Browser Support](#-browser-support)
+- [Troubleshooting](#-troubleshooting)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ## 💻 Installation
 
 ### Option 1: Direct Use
-Simply visit the live website - no installation required!
+Simply visit the [live website](https://turborx.github.io/CSS-Gradient-Generator/) - no installation required!
 
 ### Option 2: Local Development
 
 1. **Clone the repository**:
-
-```
+   ```bash
    git clone https://github.com/TurboRx/CSS-Gradient-Generator.git
    cd CSS-Gradient-Generator
-```
+   ```
 
 2. **Serve the files** (required for proper functionality):
-
-```
+   ```bash
    # Using Python 3
    python -m http.server 8000
-
+   
    # Using Node.js (npx)
    npx serve .
-
+   
    # Using PHP
    php -S localhost:8000
-```
+   ```
 
-3. **Open in browser**: Navigate to
-```
-   http://localhost:8000
-```
-4. **Run tests**: Visit
-```
-   http://localhost:8000/test.html
-```
-   to verify everything works
+3. **Open in browser**: Navigate to `http://localhost:8000`
+
+4. **Run tests**: Visit `http://localhost:8000/test.html` to verify everything works
 
 ## 🎨 Usage
 
@@ -95,33 +105,30 @@ Simply visit the live website - no installation required!
 
 ## ⌨️ Keyboard Shortcuts
 
-|Shortcut|Action|
-|--|--|
-|``` Ctrl/Cmd + C ```|Copy gradient code|
-|``` Ctrl/Cmd + Z ```|Undo last action|
-|``` Ctrl/Cmd + Shift + Z ```|Redo action|
-|``` Ctrl/Cmd + Y ```|Redo action (alternative)|
-|``` Ctrl/Cmd + R ```|Generate random gradient|
-|``` Escape ```|Clear focus|
+| Shortcut | Action |
+|----------|--------|
+| `Ctrl/Cmd + C` | Copy gradient code |
+| `Ctrl/Cmd + Z` | Undo last action |
+| `Ctrl/Cmd + Shift + Z` | Redo action |
+| `Ctrl/Cmd + Y` | Redo action (alternative) |
+| `Ctrl/Cmd + R` | Generate random gradient |
+| `Escape` | Clear focus |
 
 ## 📎 Export Formats
 
 ### CSS
-
-```
+```css
 background-image: linear-gradient(45deg, #ff0000, #0000ff);
 ```
 
 ### SCSS
-
-```
+```scss
 $gradient: linear-gradient(45deg, #ff0000, #0000ff);
 background-image: $gradient;
 ```
 
 ### JSON
-
-```
+```json
 {
   "type": "linear-gradient",
   "angle": 45,
@@ -134,8 +141,7 @@ background-image: $gradient;
 ```
 
 ### SVG
-
-```
+```svg
 <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -156,7 +162,6 @@ background-image: $gradient;
 - **Mobile browsers**: iOS Safari 14+, Chrome Mobile 88+ ✅
 
 ### Feature Support
-
 - CSS Gradients: All modern browsers
 - Material Icons: Loaded via Google Fonts API
 - Clipboard API: HTTPS required for full functionality
@@ -167,58 +172,44 @@ background-image: $gradient;
 ### Common Issues
 
 #### 1. "Material Icons not loading"
-
 **Symptoms**: Icons appear as text or squares
 
 **Solutions**:
-
 - Ensure internet connection for Google Fonts
 - Check if Content Security Policy blocks external fonts
 - Try refreshing the page
-- Verify the page is served over HTTP/HTTPS (not
-```
-  file://
-```
-  )
+- Verify the page is served over HTTP/HTTPS (not `file://`)
 
 #### 2. "Copy to clipboard not working"
-
 **Symptoms**: Copy button doesn't work
 
 **Solutions**:
-
 - Ensure page is served over HTTPS (required for Clipboard API)
 - Use a local server for development (see installation instructions)
 - Try manual copy from the text area
 
 #### 3. "Gradient preview not updating"
-
 **Symptoms**: Changes don't reflect in preview
 
 **Solutions**:
-
 - Check browser console for JavaScript errors
 - Ensure all script files are loaded correctly
 - Try refreshing the page
 - Verify no browser extensions are interfering
 
 #### 4. "Theme toggle not working"
-
 **Symptoms**: Dark/Light mode buttons don't respond
 
 **Solutions**:
-
 - Check that JavaScript is enabled
 - Verify theme buttons exist in the DOM
 - Clear browser cache and reload
 - Check for console errors
 
 #### 5. "Export/Download failing"
-
 **Symptoms**: Download button doesn't create file
 
 **Solutions**:
-
 - Check browser's download settings
 - Ensure pop-ups aren't blocked
 - Try a different export format
@@ -227,7 +218,7 @@ background-image: $gradient;
 ### Debug Mode
 
 To enable debug mode, open browser console and run:
-```
+```javascript
 localStorage.setItem('gradient-debug', 'true');
 location.reload();
 ```
@@ -236,11 +227,7 @@ This will enable detailed logging to help diagnose issues.
 
 ### Testing Your Installation
 
-1. Visit
-```
- test.html
-```
- in your browser
+1. Visit `test.html` in your browser
 2. Review the test results
 3. Address any failed tests
 4. Green checkmarks = everything is working!
@@ -249,58 +236,42 @@ This will enable detailed logging to help diagnose issues.
 
 If you encounter issues:
 
-1. **Check the test page**: Visit
-```
- test.html
-```
- first
+1. **Check the test page**: Visit `test.html` first
 2. **Review console errors**: Open browser DevTools (F12)
 3. **Try different browsers**: Test in Chrome, Firefox, Safari
 4. **Check network**: Ensure internet access for external resources
-5. **Create an issue**: Report bugs on GitHub Issues
+5. **Create an issue**: Report bugs on [GitHub Issues](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
 
 ## 🤝 Contributing
 
 Contributions are welcome! Here's how to contribute:
 
 ### Quick Contributions
-
 1. **Fork** the repository
 2. **Clone** your fork:
-
-```
+   ```bash
    git clone https://github.com/YourUsername/CSS-Gradient-Generator.git
-```
+   ```
 3. **Create** a feature branch:
-
-```
+   ```bash
    git checkout -b feature/your-feature-name
-```
+   ```
 4. **Make** your changes
-5. **Test** your changes with
-```
- test.html
-```
+5. **Test** your changes with `test.html`
 6. **Commit** your changes:
-
-```
+   ```bash
    git add .
    git commit -m "Add your descriptive message"
-```
+   ```
 7. **Push** to your fork:
-
-```
+   ```bash
    git push origin feature/your-feature-name
-```
+   ```
 8. **Create** a Pull Request
 
 ### Development Guidelines
 
-- **Test thoroughly**: Run
-```
- test.html
-```
- before submitting
+- **Test thoroughly**: Run `test.html` before submitting
 - **Follow conventions**: Match existing code style
 - **Document changes**: Update README if needed
 - **Consider accessibility**: Maintain ARIA compliance
@@ -310,7 +281,6 @@ Contributions are welcome! Here's how to contribute:
 ### Reporting Issues
 
 When reporting bugs:
-
 1. **Use test.html**: Include test results
 2. **Browser info**: Specify browser and version
 3. **Steps to reproduce**: Clear reproduction steps
@@ -347,14 +317,15 @@ SOFTWARE.
 
 ## 👨‍💻 Developer and Maintainer
 
-**TurboRx** - GitHub Profile
+**TurboRx** - [GitHub Profile](https://github.com/TurboRx)
 
 ### Connect
-
-- 🐛 **Issues**: Report bugs or request features
+- 🐛 **Issues**: [Report bugs or request features](https://github.com/TurboRx/CSS-Gradient-Generator/issues)
 - 🌟 **Star**: Show your support by starring the repository
 - 🌴 **Fork**: Create your own version
 
+---
+
 **Made with ❤️ for the web development community**
 
-Live Demo | Test Suite | GitHub
+[Live Demo](https://turborx.github.io/CSS-Gradient-Generator/) | [Test Suite](https://turborx.github.io/CSS-Gradient-Generator/test.html) | [GitHub](https://github.com/TurboRx/CSS-Gradient-Generator)
