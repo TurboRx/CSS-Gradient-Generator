@@ -1,206 +1,254 @@
-/* Material Symbols and responsive UI overrides */
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0');
+/* Override styles to fix various display issues */
 
-.material-icon {
-  font-family: 'Material Symbols Outlined';
-  font-weight: 400;
-  font-style: normal;
-  font-size: 20px;
-  line-height: 1;
-  display: inline-block;
-  -webkit-font-smoothing: antialiased;
-  -webkit-font-feature-settings: 'liga';
-}
-
-/* Header with right-aligned compact theme selector */
-header.site-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 16px;
-  margin-bottom: var(--spacing-xl, 2rem);
-}
-
-header.site-header .theme-section {
-  margin-left: auto;
-  flex-shrink: 0;
-}
-
-header.site-header #theme-select {
-  font-size: 12px;
-  padding: 4px 22px 4px 8px;
-  border-radius: 6px;
-  border: 1px solid var(--border-color, #ccc);
-  background: var(--bg-primary, #fff);
-  color: var(--text-primary, #111);
-  min-width: 80px;
-}
-
-[data-theme="dark"] header.site-header #theme-select {
-  background: var(--bg-secondary, #161b22);
-  color: var(--text-primary, #f0f6fc);
-  border-color: var(--border-color, #30363d);
-}
-
-/* Compact chevron for select */
-#theme-toggle {
-  position: relative;
-  display: inline-block;
-}
-
-#theme-toggle::after {
-  content: '▾';
-  position: absolute;
-  right: 8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 10px;
-  pointer-events: none;
-  color: currentColor;
-}
-
-/* Main container constraints */
-main {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 16px 16px;
-}
-
-/* Preview section */
-.preview-section #gradient-preview {
-  min-height: 220px;
-  border-radius: 12px;
-  border: 2px solid var(--border-color, #ddd);
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto var(--spacing-xl, 2rem);
-}
-
-[data-theme="dark"] .preview-section #gradient-preview {
-  border-color: var(--border-color, #30363d);
-}
-
-/* Action buttons responsive wrap */
-.controls-section .action-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: var(--spacing-xl, 2rem);
-}
-
-/* Controls grid: 2-col desktop, 1-col mobile */
-#controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-/* Color stops responsive grid */
-.color-stops-fieldset #colorStops {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  max-height: unset;
-  overflow: visible;
-}
-
-.color-stop {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-}
-
-.color-stop input[type="color"] {
-  width: 40px;
-  height: 32px;
-}
-
-.btn-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Code area full width */
-.code-output textarea {
-  width: 100%;
+/* Fix for mobile blue line at top */
+html {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
   box-sizing: border-box;
 }
 
-.code-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: var(--spacing-md, 1rem);
+html::before,
+html::after {
+  display: none !important;
 }
 
-/* Toast spacing */
-#toast-container {
-  gap: 8px;
+body {
+  margin: 0 !important;
+  padding: var(--spacing-md);
+  border-top: none !important;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Mobile responsive breakpoints */
+body::before,
+body::after {
+  display: none !important;
+}
+
+/* Remove any potential browser-added elements */
+*:not(#toast-container):not(.toast):not(.toast *) {
+  border-top-color: transparent !important;
+}
+
+/* Ensure no progress bars or loading indicators interfere */
+progress {
+  display: none !important;
+}
+
+/* Remove any browser default styling that might cause lines */
+::-webkit-progress-bar,
+::-webkit-progress-value,
+::-moz-progress-bar {
+  display: none !important;
+}
+
+/* Fix for potential viewport issues */
+@viewport {
+  width: device-width;
+  zoom: 1.0;
+}
+
+/* Mobile-specific fixes */
 @media (max-width: 768px) {
-  header.site-header {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
+  html {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+    background-color: var(--bg-primary);
   }
   
-  header.site-header .theme-section {
-    margin-left: 0;
+  body {
+    margin-top: 0 !important;
+    padding-top: var(--spacing-sm) !important;
+    border-top: none !important;
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height */
+    position: relative;
   }
   
-  #controls {
-    grid-template-columns: 1fr;
+  /* Ensure header doesn't have unwanted spacing */
+  header {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
   }
   
-  .color-stops-fieldset #colorStops {
-    grid-template-columns: 1fr;
+  .site-header {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
   }
   
-  .preview-section #gradient-preview {
-    min-height: 180px;
-  }
-  
-  .action-buttons {
-    justify-content: stretch;
-  }
-  
-  .action-buttons .btn {
-    flex: 1;
-    justify-content: center;
-  }
-  
-  .code-actions {
-    flex-direction: column;
-  }
-  
-  .code-actions .btn {
-    justify-content: center;
+  /* Fix for theme selector positioning */
+  .theme-section {
+    position: relative;
+    z-index: 1;
   }
 }
 
+/* Extra small screens */
 @media (max-width: 480px) {
-  header.site-header {
-    padding: 12px;
+  body {
+    padding: var(--spacing-xs) !important;
+  }
+}
+
+/* Fix for PWA/mobile browser chrome */
+@media (display-mode: standalone) {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
-  header.site-header #theme-select {
-    font-size: 11px;
-    padding: 3px 20px 3px 6px;
+  body {
+    padding: var(--spacing-sm) !important;
   }
-  
-  main {
-    padding: 0 12px 12px;
+}
+
+/* Ensure safe area support doesn't add unwanted lines */
+@supports (padding: max(0px)) {
+  @media (max-width: 768px) {
+    html {
+      padding-top: 0 !important;
+    }
+    
+    body {
+      padding-top: max(var(--spacing-sm), env(safe-area-inset-top)) !important;
+    }
   }
+}
+
+/* Remove any potential system UI elements */
+::-webkit-scrollbar-corner {
+  background: transparent !important;
+}
+
+/* Fix for potential CSS custom property issues */
+:root {
+  --safe-area-inset-top: 0px;
+  --safe-area-inset-right: 0px;
+  --safe-area-inset-bottom: 0px;
+  --safe-area-inset-left: 0px;
+}
+
+/* Theme selector specific fixes */
+#theme-select {
+  background-color: var(--bg-secondary) !important;
+  border: 2px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+#theme-toggle {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ensure no bleeding from gradient preview */
+#gradient-preview {
+  border: 2px solid var(--border-color) !important;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Loading overlay fixes */
+#loading-overlay {
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  position: fixed !important;
+}
+
+.loading-overlay {
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+/* Fix potential border bleeding */
+* {
+  box-sizing: border-box;
+}
+
+*:not(.toast):not(.toast *):not(#toast-container) {
+  border-image: none !important;
+}
+
+/* Ensure proper stacking context */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  position: relative;
+  z-index: 2;
+}
+
+/* Remove any potential ::before or ::after pseudo-elements causing issues */
+html:not(.toast-manager)::before,
+html:not(.toast-manager)::after,
+body:not(.toast-content)::before,
+body:not(.toast-content)::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Force remove any progress indicators */
+[role="progressbar"],
+progress,
+.progress,
+.loading-bar,
+.progress-bar {
+  display: none !important;
+}
+
+/* Browser-specific fixes */
+
+/* WebKit browsers */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  html, body {
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Firefox */
+@-moz-document url-prefix() {
+  html, body {
+    margin: 0 !important;
+    border-top: none !important;
+  }
+}
+
+/* Edge/IE */
+@supports (-ms-ime-align: auto) {
+  html, body {
+    margin: 0 !important;
+    border-top: none !important;
+  }
+}
+
+/* Disable any potential drag indicators */
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Re-enable selection for text inputs and content */
+input,
+textarea,
+[contenteditable],
+.selectable {
+  -webkit-user-select: auto;
+  -khtml-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
+  user-select: auto;
 }
