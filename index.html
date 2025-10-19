@@ -7,9 +7,19 @@
   <meta name="keywords" content="CSS, gradient, generator, web design, linear, radial, conic, CSS3" />
   <meta name="author" content="TurboRx" />
   <title>CSS Gradient Generator - Create Beautiful Gradients with Live Preview</title>
+  
+  <!-- Preload critical resources -->
   <link rel="preload" href="styles/styles.css" as="style" />
   <link rel="preload" href="scripts/gradientGenerator.js" as="script" />
+  
+  <!-- Material Icons -->
+  <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" /></noscript>
+  
+  <!-- Stylesheets -->
   <link rel="stylesheet" href="styles/index.css" />
+  
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%22100%22 y2=%22100%22><stop offset=%220%25%22 style=%22stop-color:%23ff0080%22/><stop offset=%22100%25%22 style=%22stop-color:%23ff8c00%22/></linearGradient></defs><rect width=%22100%22 height=%22100%22 fill=%22url(%23g)%22/></svg>" />
 </head>
 <body>
@@ -23,12 +33,14 @@
     <section class="theme-section" aria-labelledby="theme-heading">
       <h2 id="theme-heading" class="visually-hidden">Theme Settings</h2>
       <div id="theme-toggle" role="group" aria-label="Theme selection">
-        <label for="theme-select" class="visually-hidden">Theme</label>
-        <select id="theme-select" aria-label="Theme selector">
-          <option value="system">System</option>
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-        </select>
+        <button id="light-mode" type="button" class="btn btn-outline" aria-pressed="true">
+          <span class="material-icons" aria-hidden="true">light_mode</span>
+          Light
+        </button>
+        <button id="dark-mode" type="button" class="btn btn-outline" aria-pressed="false">
+          <span class="material-icons" aria-hidden="true">dark_mode</span>
+          Dark
+        </button>
       </div>
     </section>
   </header>
@@ -47,19 +59,19 @@
       
       <div class="action-buttons">
         <button id="randomDesign" type="button" class="btn btn-primary">
-          <span class="material-icon" aria-hidden="true">casino</span>
+          <span class="material-icons" aria-hidden="true">casino</span>
           Random Design
         </button>
         <button id="undoBtn" type="button" class="btn btn-secondary" disabled>
-          <span class="material-icon" aria-hidden="true">undo</span>
+          <span class="material-icons" aria-hidden="true">undo</span>
           Undo
         </button>
         <button id="redoBtn" type="button" class="btn btn-secondary" disabled>
-          <span class="material-icon" aria-hidden="true">redo</span>
+          <span class="material-icons" aria-hidden="true">redo</span>
           Redo
         </button>
         <button id="resetBtn" type="button" class="btn btn-outline">
-          <span class="material-icon" aria-hidden="true">restart_alt</span>
+          <span class="material-icons" aria-hidden="true">restart_alt</span>
           Reset
         </button>
       </div>
@@ -142,7 +154,7 @@
               <label class="visually-hidden" for="position-0">Position 1</label>
               <input type="number" id="position-0" class="stop-position" placeholder="%" min="0" max="100" aria-label="Position 1 (percentage)" />
               <button class="remove-stop btn-icon" type="button" aria-label="Remove color stop 1" disabled>
-                <span class="material-icon" aria-hidden="true">close</span>
+                <span class="material-icons" aria-hidden="true">close</span>
               </button>
             </div>
             <div class="color-stop" data-stop-index="1">
@@ -151,12 +163,12 @@
               <label class="visually-hidden" for="position-1">Position 2</label>
               <input type="number" id="position-1" class="stop-position" placeholder="%" min="0" max="100" aria-label="Position 2 (percentage)" />
               <button class="remove-stop btn-icon" type="button" aria-label="Remove color stop 2" disabled>
-                <span class="material-icon" aria-hidden="true">close</span>
+                <span class="material-icons" aria-hidden="true">close</span>
               </button>
             </div>
           </div>
           <button id="addStop" type="button" class="btn btn-outline">
-            <span class="material-icon" aria-hidden="true">add</span>
+            <span class="material-icons" aria-hidden="true">add</span>
             Add Color Stop
           </button>
         </fieldset>
@@ -183,15 +195,15 @@
             <small id="css-code-help">Generated CSS code for your gradient</small>
             <div class="code-actions">
               <button id="copyCode" type="button" class="btn btn-primary">
-                <span class="material-icon" aria-hidden="true">content_copy</span>
+                <span class="material-icons" aria-hidden="true">content_copy</span>
                 Copy Code
               </button>
               <button id="downloadCode" type="button" class="btn btn-secondary">
-                <span class="material-icon" aria-hidden="true">download</span>
+                <span class="material-icons" aria-hidden="true">download</span>
                 Download
               </button>
               <button id="shareGradient" type="button" class="btn btn-outline">
-                <span class="material-icon" aria-hidden="true">share</span>
+                <span class="material-icons" aria-hidden="true">share</span>
                 Share
               </button>
             </div>
@@ -214,6 +226,7 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script src="scripts/toastNotifications.js"></script>
   <script src="scripts/utils.js"></script>
   <script src="scripts/gradientPresets.js"></script>
