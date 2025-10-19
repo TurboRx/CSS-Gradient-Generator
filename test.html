@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS Gradient Generator - Test Suite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .test-section {
+      margin-bottom: 30px;
+      padding: 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+    }
+    .test-result {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 4px;
+    }
+    .pass {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+    .fail {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+    .warning {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      color: #856404;
+    }
+    .test-link {
+      display: inline-block;
+      margin: 10px 0;
+      padding: 10px 15px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    .test-link:hover {
+      background: #0056b3;
+    }
+    #output {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS Gradient Generator - Test Suite</h1>
+  <p>This page tests all aspects of the CSS Gradient Generator to ensure proper functionality.</p>
+  
+  <a href="index.html" class="test-link">→ Open Gradient Generator</a>
+  
+  <div id="output"></div>
+  
+  <script>
+    class TestSuite {
+      constructor() {
+        this.tests = [];
+        this.results = [];
+        this.output = document.getElementById('output');
+        this.runAllTests();
+      }
+      
+      addTest(name, testFn) {
+        this.tests.push({ name, testFn });
+      }
+      
+      async runAllTests() {
+        console.log('Starting CSS Gradient Generator Test Suite...');
+        
+        // File existence tests
+        this.addTest('Check index.html exists', () => this.checkFileExists('index.html'));
+        this.addTest('Check main CSS file', () => this.checkFileExists('styles/index.css'));
+        this.addTest('Check base styles', () => this.checkFileExists('styles/styles.css'));
+        this.addTest('Check main JS file', () => this.checkFileExists('scripts/gradientGenerator.js'));
+        this.addTest('Check utils JS file', () => this.checkFileExists('scripts/utils.js'));
+        this.addTest('Check presets JS file', () => this.checkFileExists('scripts/gradientPresets.js'));
+        this.addTest('Check toasts JS file', () => this.checkFileExists('scripts/toastNotifications.js'));
+        
+        // DOM structure tests
+        this.addTest('Material Icons loaded', () => this.checkMaterialIcons());
+        this.addTest('Critical DOM elements', () => this.checkDOMElements());
+        this.addTest('Theme toggle buttons', () => this.checkThemeButtons());
+        this.addTest('Form controls', () => this.checkFormControls());
+        this.addTest('Color stops container', () => this.checkColorStops());
+        
+        // CSS tests
+        this.addTest('CSS variables defined', () => this.checkCSSVariables());
+        this.addTest('Theme toggle styling', () => this.checkThemeToggleStyling());
+        this.addTest('Responsive breakpoints', () => this.checkResponsive());
+        
+        // Functionality tests
+        this.addTest('Script loading order', () => this.checkScriptOrder());
+        this.addTest('Accessibility features', () => this.checkAccessibility());
+        this.addTest('SEO meta tags', () => this.checkSEO());
+        
+        // Performance tests
+        this.addTest('Resource preloading', () => this.checkPreloading());
+        this.addTest('Icon font optimization', () => this.checkIconOptimization());
+        
+        // Run all tests
+        for (const test of this.tests) {
+          try {
+            const result = await test.testFn();
+            this.results.push({ name: test.name, status: 'pass', message: result || 'Test passed' });
+          } catch (error) {
+            this.results.push({ name: test.name, status: 'fail', message: error.message });
+          }
+        }
+        
+        this.displayResults();
+      }
+      
+      async checkFileExists(filePath) {
+        try {
+          const response = await fetch(filePath, { method: 'HEAD' });
+          if (response.ok) {
+            return `File exists: ${filePath}`;
+          } else {
+            throw new Error(`File not found: ${filePath} (Status: ${response.status})`);
+          }
+        } catch (error) {
+          throw new Error(`Cannot access file: ${filePath} - ${error.message}`);
+        }
+      }
+      
+      checkMaterialIcons() {
+        const iconLinks = document.querySelectorAll('link[href*="fonts.googleapis.com"]');
+        if (iconLinks.length > 0) {
+          return 'Material Icons link found in document head';
+        }
+        
+        // Check if loaded in main page
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            if (html.includes('fonts.googleapis.com') && html.includes('Material+Icons')) {
+              return 'Material Icons properly configured in index.html';
+            }
+            throw new Error('Material Icons not found in index.html');
+          });
+      }
+      
+      checkDOMElements() {
+        const criticalElements = [
+          '#gradient-preview',
+          '#gradientType', 
+          '#colorStops',
+          '#css-code',
+          '#theme-toggle'
+        ];
+        
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const missing = criticalElements.filter(selector => {
+              const id = selector.replace('#', '');
+              return !html.includes(`id="${id}"`);
+            });
+            
+            if (missing.length === 0) {
+              return 'All critical DOM elements found';
+            }
+            throw new Error(`Missing elements: ${missing.join(', ')}`);
+          });
+      }
+      
+      checkThemeButtons() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const hasLightButton = html.includes('id="light-mode"');
+            const hasDarkButton = html.includes('id="dark-mode"');
+            
+            if (hasLightButton && hasDarkButton) {
+              return 'Theme toggle buttons properly configured';
+            }
+            throw new Error('Theme toggle buttons not found or incorrectly configured');
+          });
+      }
+      
+      checkFormControls() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const controls = [
+              'angleSlider',
+              'radialShape',
+              'conicAngle',
+              'exportFormat',
+              'addStop'
+            ];
+            
+            const missing = controls.filter(id => !html.includes(`id="${id}"`));
+            
+            if (missing.length === 0) {
+              return 'All form controls found';
+            }
+            throw new Error(`Missing form controls: ${missing.join(', ')}`);
+          });
+      }
+      
+      checkColorStops() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const hasContainer = html.includes('id="colorStops"');
+            const hasDefaultStops = html.includes('data-stop-index="0"') && html.includes('data-stop-index="1"');
+            
+            if (hasContainer && hasDefaultStops) {
+              return 'Color stops container and default stops configured';
+            }
+            throw new Error('Color stops not properly configured');
+          });
+      }
+      
+      checkCSSVariables() {
+        return fetch('styles/styles.css')
+          .then(response => response.text())
+          .then(css => {
+            const requiredVars = [
+              '--bg-primary',
+              '--accent-primary',
+              '--border-radius',
+              '--spacing-md',
+              '--transition-fast'
+            ];
+            
+            const missing = requiredVars.filter(varName => !css.includes(varName));
+            
+            if (missing.length === 0) {
+              return 'All required CSS variables defined';
+            }
+            throw new Error(`Missing CSS variables: ${missing.join(', ')}`);
+          });
+      }
+      
+      checkThemeToggleStyling() {
+        return fetch('styles/styles.css')
+          .then(response => response.text())
+          .then(css => {
+            const hasThemeToggle = css.includes('#theme-toggle');
+            const hasAriaPressed = css.includes('[aria-pressed="true"]');
+            const hasDarkTheme = css.includes('[data-theme=\'dark\']');
+            
+            if (hasThemeToggle && hasAriaPressed && hasDarkTheme) {
+              return 'Theme toggle styling properly configured';
+            }
+            throw new Error('Theme toggle styling incomplete');
+          });
+      }
+      
+      checkResponsive() {
+        return fetch('styles/styles.css')
+          .then(response => response.text())
+          .then(css => {
+            const has768Breakpoint = css.includes('@media (max-width: 768px)');
+            const has480Breakpoint = css.includes('@media (max-width: 480px)');
+            
+            if (has768Breakpoint && has480Breakpoint) {
+              return 'Responsive breakpoints configured';
+            }
+            throw new Error('Missing responsive breakpoints');
+          });
+      }
+      
+      checkScriptOrder() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const scripts = [
+              'toastNotifications.js',
+              'utils.js', 
+              'gradientPresets.js',
+              'gradientGenerator.js'
+            ];
+            
+            let lastIndex = -1;
+            for (const script of scripts) {
+              const index = html.indexOf(script);
+              if (index === -1) {
+                throw new Error(`Script not found: ${script}`);
+              }
+              if (index < lastIndex) {
+                throw new Error(`Incorrect script loading order: ${script}`);
+              }
+              lastIndex = index;
+            }
+            
+            return 'Scripts loaded in correct order';
+          });
+      }
+      
+      checkAccessibility() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const features = [
+              'skip-link',
+              'aria-label',
+              'aria-describedby',
+              'visually-hidden',
+              'role="group"'
+            ];
+            
+            const missing = features.filter(feature => !html.includes(feature));
+            
+            if (missing.length === 0) {
+              return 'Accessibility features implemented';
+            }
+            throw new Error(`Missing accessibility features: ${missing.join(', ')}`);
+          });
+      }
+      
+      checkSEO() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const seoElements = [
+              'meta name="description"',
+              'meta name="keywords"',
+              'meta name="author"',
+              'lang="en"'
+            ];
+            
+            const missing = seoElements.filter(element => !html.includes(element));
+            
+            if (missing.length === 0) {
+              return 'SEO meta tags properly configured';
+            }
+            throw new Error(`Missing SEO elements: ${missing.join(', ')}`);
+          });
+      }
+      
+      checkPreloading() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const preloadElements = [
+              'rel="preload"',
+              'as="style"',
+              'as="script"'
+            ];
+            
+            const missing = preloadElements.filter(element => !html.includes(element));
+            
+            if (missing.length === 0) {
+              return 'Resource preloading configured';
+            }
+            throw new Error(`Missing preload elements: ${missing.join(', ')}`);
+          });
+      }
+      
+      checkIconOptimization() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            const hasOnload = html.includes('onload="this.onload=null;this.rel=\'stylesheet\'"');
+            const hasNoscript = html.includes('<noscript>');
+            
+            if (hasOnload && hasNoscript) {
+              return 'Material Icons optimized for performance';
+            }
+            
+            // This is a warning, not a failure
+            this.results.push({ 
+              name: 'Icon font optimization', 
+              status: 'warning', 
+              message: 'Consider optimizing Material Icons loading for better performance' 
+            });
+            return 'Basic icon loading configured';
+          });
+      }
+      
+      displayResults() {
+        const passCount = this.results.filter(r => r.status === 'pass').length;
+        const failCount = this.results.filter(r => r.status === 'fail').length;
+        const warningCount = this.results.filter(r => r.status === 'warning').length;
+        
+        let html = `
+          <div class="test-section">
+            <h2>Test Results Summary</h2>
+            <p><strong>Total Tests:</strong> ${this.results.length}</p>
+            <p><strong>Passed:</strong> ${passCount}</p>
+            <p><strong>Failed:</strong> ${failCount}</p>
+            <p><strong>Warnings:</strong> ${warningCount}</p>
+          </div>
+        `;
+        
+        this.results.forEach(result => {
+          html += `
+            <div class="test-section">
+              <h3>${result.name}</h3>
+              <div class="test-result ${result.status}">
+                <strong>Status:</strong> ${result.status.toUpperCase()}<br>
+                <strong>Message:</strong> ${result.message}
+              </div>
+            </div>
+          `;
+        });
+        
+        if (failCount === 0) {
+          html += `
+            <div class="test-section">
+              <div class="test-result pass">
+                <h3>🎉 All Tests Passed!</h3>
+                <p>Your CSS Gradient Generator is properly configured and ready to use.</p>
+                <a href="index.html" class="test-link">Launch Generator →</a>
+              </div>
+            </div>
+          `;
+        } else {
+          html += `
+            <div class="test-section">
+              <div class="test-result fail">
+                <h3>⚠️ Issues Found</h3>
+                <p>Please review and fix the failed tests above before using the generator.</p>
+              </div>
+            </div>
+          `;
+        }
+        
+        this.output.innerHTML = html;
+      }
+    }
+    
+    // Start the test suite
+    new TestSuite();
+  </script>
+</body>
+</html>
