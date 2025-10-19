@@ -1,3 +1,19 @@
-/* Override styles to fix various display issues */
+/* Minimal, safe overrides only. Do not modify layout or spacing globally. */
 
-/* Previous minimal overrides (restored) */
+/* 1) Ensure no unexpected top gaps on mobile */
+html, body { margin: 0 !important; border: 0 !important; }
+header.site-header { margin-top: 0 !important; }
+
+/* 2) Toasts are overlay and never affect layout */
+#toast-container { position: fixed !important; pointer-events: none; top: var(--spacing-md); right: var(--spacing-md); left: auto; z-index: 10000; }
+#toast-container:empty { display: none !important; }
+.toast { pointer-events: auto; }
+
+/* 3) Preserve buttons wrapping and equal widths on mobile */
+@media (max-width: 768px) {
+  .action-buttons { display: flex; flex-wrap: wrap; gap: var(--spacing-sm); }
+  .action-buttons .btn { flex: 1 1 45%; justify-content: center; }
+}
+
+/* 4) Prevent preview bleed */
+#gradient-preview { box-sizing: border-box; overflow: hidden; }
