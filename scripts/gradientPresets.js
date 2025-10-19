@@ -2,7 +2,7 @@
  * Gradient Presets Library
  * Collection of popular and beautiful gradient presets
  * @author TurboRx
- * @version 2.0.0
+ * @version 2.1.0
  */
 
 'use strict';
@@ -15,36 +15,42 @@ const GradientPresets = {
   popular: [
     {
       name: 'Ocean Blue',
+      category: 'Popular',
       type: 'linear-gradient',
       angle: 135,
       colors: [{ color: '#667eea', position: 0 }, { color: '#764ba2', position: 100 }]
     },
     {
       name: 'Sunset',
+      category: 'Popular',
       type: 'linear-gradient',
       angle: 90,
       colors: [{ color: '#ff9a9e', position: 0 }, { color: '#fecfef', position: 50 }, { color: '#fecfef', position: 100 }]
     },
     {
       name: 'Purple Bliss',
+      category: 'Popular',
       type: 'linear-gradient',
       angle: 45,
       colors: [{ color: '#360033', position: 0 }, { color: '#0b8793', position: 100 }]
     },
     {
       name: 'Fire',
+      category: 'Popular',
       type: 'linear-gradient',
       angle: 180,
       colors: [{ color: '#ff416c', position: 0 }, { color: '#ff4b2b', position: 100 }]
     },
     {
       name: 'Aurora',
+      category: 'Popular',
       type: 'linear-gradient',
       angle: 225,
       colors: [{ color: '#00c6ff', position: 0 }, { color: '#0072ff', position: 100 }]
     },
     {
       name: 'Emerald',
+      category: 'Popular',
       type: 'linear-gradient',
       angle: 315,
       colors: [{ color: '#56ab2f', position: 0 }, { color: '#a8e6cf', position: 100 }]
@@ -55,24 +61,28 @@ const GradientPresets = {
   nature: [
     {
       name: 'Forest',
+      category: 'Nature',
       type: 'linear-gradient',
       angle: 180,
       colors: [{ color: '#134e5e', position: 0 }, { color: '#71b280', position: 100 }]
     },
     {
       name: 'Mountain',
+      category: 'Nature',
       type: 'linear-gradient',
       angle: 0,
       colors: [{ color: '#8360c3', position: 0 }, { color: '#2ebf91', position: 100 }]
     },
     {
       name: 'Desert',
+      category: 'Nature',
       type: 'linear-gradient',
       angle: 45,
       colors: [{ color: '#f4d03f', position: 0 }, { color: '#f39c12', position: 100 }]
     },
     {
       name: 'Ocean Deep',
+      category: 'Nature',
       type: 'linear-gradient',
       angle: 270,
       colors: [{ color: '#2980b9', position: 0 }, { color: '#6dd5fa', position: 50 }, { color: '#ffffff', position: 100 }]
@@ -83,24 +93,28 @@ const GradientPresets = {
   modern: [
     {
       name: 'Instagram',
+      category: 'Modern',
       type: 'linear-gradient',
       angle: 45,
       colors: [{ color: '#833ab4', position: 0 }, { color: '#fd1d1d', position: 50 }, { color: '#fcb045', position: 100 }]
     },
     {
       name: 'Spotify',
+      category: 'Modern',
       type: 'linear-gradient',
       angle: 135,
       colors: [{ color: '#1ed760', position: 0 }, { color: '#191414', position: 100 }]
     },
     {
       name: 'Netflix',
+      category: 'Modern',
       type: 'linear-gradient',
       angle: 90,
       colors: [{ color: '#8b0000', position: 0 }, { color: '#000000', position: 100 }]
     },
     {
       name: 'Discord',
+      category: 'Modern',
       type: 'linear-gradient',
       angle: 180,
       colors: [{ color: '#7289da', position: 0 }, { color: '#424549', position: 100 }]
@@ -111,24 +125,28 @@ const GradientPresets = {
   pastel: [
     {
       name: 'Cotton Candy',
+      category: 'Pastel',
       type: 'linear-gradient',
       angle: 135,
       colors: [{ color: '#ffecd2', position: 0 }, { color: '#fcb69f', position: 100 }]
     },
     {
       name: 'Lavender',
+      category: 'Pastel',
       type: 'linear-gradient',
       angle: 225,
       colors: [{ color: '#e8cbc0', position: 0 }, { color: '#636fa4', position: 100 }]
     },
     {
       name: 'Mint',
+      category: 'Pastel',
       type: 'linear-gradient',
       angle: 45,
       colors: [{ color: '#c1dfc4', position: 0 }, { color: '#deecdd', position: 100 }]
     },
     {
       name: 'Peach',
+      category: 'Pastel',
       type: 'linear-gradient',
       angle: 315,
       colors: [{ color: '#ffeaa7', position: 0 }, { color: '#fab1a0', position: 100 }]
@@ -139,24 +157,28 @@ const GradientPresets = {
   dark: [
     {
       name: 'Dark Steel',
+      category: 'Dark',
       type: 'linear-gradient',
       angle: 180,
       colors: [{ color: '#2c3e50', position: 0 }, { color: '#000000', position: 100 }]
     },
     {
       name: 'Purple Dark',
+      category: 'Dark',
       type: 'linear-gradient',
       angle: 135,
       colors: [{ color: '#2d1b69', position: 0 }, { color: '#11998e', position: 100 }]
     },
     {
       name: 'Carbon',
+      category: 'Dark',
       type: 'linear-gradient',
       angle: 45,
       colors: [{ color: '#434343', position: 0 }, { color: '#000000', position: 100 }]
     },
     {
       name: 'Deep Purple',
+      category: 'Dark',
       type: 'linear-gradient',
       angle: 270,
       colors: [{ color: '#1a1a2e', position: 0 }, { color: '#16213e', position: 50 }, { color: '#0f3460', position: 100 }]
@@ -167,6 +189,7 @@ const GradientPresets = {
   radial: [
     {
       name: 'Radial Burst',
+      category: 'Radial',
       type: 'radial-gradient',
       shape: 'circle',
       size: 'farthest-corner',
@@ -175,6 +198,7 @@ const GradientPresets = {
     },
     {
       name: 'Spotlight',
+      category: 'Radial',
       type: 'radial-gradient',
       shape: 'ellipse',
       size: 'closest-side',
@@ -183,6 +207,7 @@ const GradientPresets = {
     },
     {
       name: 'Glow',
+      category: 'Radial',
       type: 'radial-gradient',
       shape: 'circle',
       size: 'cover',
@@ -195,6 +220,7 @@ const GradientPresets = {
   conic: [
     {
       name: 'Rainbow Wheel',
+      category: 'Conic',
       type: 'conic-gradient',
       angle: 0,
       position: 'center',
@@ -216,6 +242,7 @@ const GradientPresets = {
     },
     {
       name: 'Pie Chart',
+      category: 'Conic',
       type: 'conic-gradient',
       angle: 0,
       position: 'center',
@@ -229,6 +256,7 @@ const GradientPresets = {
     },
     {
       name: 'Sunrise Conic',
+      category: 'Conic',
       type: 'conic-gradient',
       angle: 90,
       position: 'center',
@@ -360,7 +388,10 @@ class GradientPresetsManager {
         if (this.onPresetSelect) {
           this.onPresetSelect(preset);
         }
-        Utils.showToast(`Applied ${preset.name} gradient`, 'success');
+        
+        // Show toast notification for preset selection
+        // This will be handled by the gradientGenerator.js applyPreset method
+        // which calls gradientToasts.presetApplied(presetName, category)
       });
 
       // Add keyboard support
