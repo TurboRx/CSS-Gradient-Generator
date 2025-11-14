@@ -283,7 +283,7 @@ section {
   position: relative;
   overflow: hidden;
   transition: all var(--transition-base);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-lg);
   background: linear-gradient(45deg, #ff0080, #ff8c00);
 }
 
