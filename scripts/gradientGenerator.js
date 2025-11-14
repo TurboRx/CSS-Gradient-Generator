@@ -31,6 +31,28 @@ class GradientGenerator {
   }
 
   /**
+   * Validate color stops
+   * @param {Array} stops - Array of color stop objects
+   * @returns {Array} Validated array of color stop objects
+   */
+  validateColorStops(stops) {
+    if (!Array.isArray(stops)) return [];
+    const adjusted = stops.map(s => ({
+      color: (s && s.color) || '#000000',
+      position: (s && typeof s.position === 'number') ? Utils.clamp(s.position, 0, 100) : null
+    }));
+    // Ensure strictly increasing positions when consecutive equal
+    for (let i = 1; i < adjusted.length; i++) {
+      if (adjusted[i].position !== null && adjusted[i - 1].position !== null) {
+        if (adjusted[i].position <= adjusted[i - 1].position) {
+          adjusted[i].position = Math.min(100, adjusted[i - 1].position + 0.1);
+        }
+      }
+    }
+    return adjusted;
+  }
+
+  /**
    * Initialize DOM elements with null checks
    */
   initializeElements() {
@@ -71,12 +93,14 @@ class GradientGenerator {
     // Export controls
     this.exportFormat = document.getElementById('exportFormat');
     this.copyBtn = document.getElementById('copyCode');
+    this.copyCssBtn = document.getElementById('copyCss');
     this.downloadBtn = document.getElementById('downloadCode');
     this.shareBtn = document.getElementById('shareGradient');
     
     // Theme controls
     this.lightModeBtn = document.getElementById('light-mode');
     this.darkModeBtn = document.getElementById('dark-mode');
+    this.themeSelect = document.getElementById('theme-select');
     
     // Presets container
     this.presetsContainer = document.getElementById('presetGradients');
@@ -193,12 +217,9 @@ class GradientGenerator {
       // Export controls
       if (this.exportFormat) this.exportFormat.addEventListener('change', () => this.updateExportCode());
       if (this.copyBtn) this.copyBtn.addEventListener('click', () => this.copyCode());
+      if (this.copyCssBtn) this.copyCssBtn.addEventListener('click', () => this.copyCode('css'));
       if (this.downloadBtn) this.downloadBtn.addEventListener('click', () => this.downloadCode());
       if (this.shareBtn) this.shareBtn.addEventListener('click', () => this.shareGradient());
-      
-      // Theme controls
-      if (this.lightModeBtn) this.lightModeBtn.addEventListener('click', () => this.setTheme('light'));
-      if (this.darkModeBtn) this.darkModeBtn.addEventListener('click', () => this.setTheme('dark'));
       
       // Keyboard shortcuts
       document.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
@@ -369,22 +390,23 @@ class GradientGenerator {
         const color = colorInput.value;
         const position = positionInput && positionInput.value !== '' ? parseFloat(positionInput.value) : null;
         
-        // Validate color value
-        if (color && color.match(/^#[0-9A-Fa-f]{6}$/)) {
-          stops.push({ color, position });
-        }
+        stops.push({ color, position });
       }
     });
     
+    const filtered = stops.filter(s => Utils.isValidHex(s.color));
+    const limited = filtered.slice(0, 10); // performance cap
+    const validated = this.validateColorStops(limited);
+
     // Ensure at least 2 color stops
-    if (stops.length < 2) {
+    if (validated.length < 2) {
       return [
         { color: '#ff0000', position: null },
         { color: '#0000ff', position: null }
       ];
     }
     
-    return stops;
+    return validated;
   }
 
   /**
@@ -421,6 +443,12 @@ class GradientGenerator {
     try {
       if (!this.colorStops) return;
       
+      const count = this.colorStops.querySelectorAll('.color-stop').length;
+      if (count >= 10) {
+        this.showWarning('Maximum 10 color stops allowed for optimal performance');
+        return;
+      }
+
       const stopElement = document.createElement('div');
       stopElement.className = 'color-stop';
       stopElement.setAttribute('data-stop-index', this.colorStopCounter);
@@ -538,6 +566,15 @@ class GradientGenerator {
         return;
       }
       
+      try {
+        if (stopElement) {
+          const inputs = stopElement.querySelectorAll('input');
+          inputs.forEach(input => {
+            input.replaceWith(input.cloneNode(true)); // cheap listener cleanup
+          });
+        }
+      } catch {}
+
       stopElement.style.animation = 'slideOut 0.3s ease';
       setTimeout(() => {
         if (stopElement.parentNode) {
@@ -833,7 +870,7 @@ ${stops.map((stop, index) => {
 </svg>`;
     } catch (error) {
       console.error('Error generating SVG:', error);
-      return '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#ff0000" /></svg>';
+      return '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#888" /></svg>';
     }
   }
 
@@ -841,24 +878,30 @@ ${stops.map((stop, index) => {
    * Copy code to clipboard
    * SHOW TOAST for copy success/error as per requirements
    */
-  async copyCode() {
+  async copyCode(format = null) {
     if (!this.cssCode) return;
     
     try {
-      const success = await this.copyToClipboard(this.cssCode.value);
+      let codeToCopy = this.cssCode.value;
+      if (format === 'css') {
+        codeToCopy = `background-image: ${this.buildGradientCSS()};`;
+      }
+
+      const success = await this.copyToClipboard(codeToCopy);
       if (success) {
         // SHOW TOAST for copy success
         if (typeof gradientToasts !== 'undefined') {
-          const format = this.exportFormat ? this.exportFormat.value.toUpperCase() : 'CSS';
-          gradientToasts.copied(format);
+          const formatName = format ? format.toUpperCase() : (this.exportFormat ? this.exportFormat.value.toUpperCase() : 'CSS');
+          gradientToasts.copied(formatName);
         }
         
         // Visual feedback
-        if (this.copyBtn) {
-          const originalText = this.copyBtn.textContent;
-          this.copyBtn.textContent = 'Copied!';
+        const btn = format === 'css' ? this.copyCssBtn : this.copyBtn;
+        if (btn) {
+          const originalText = btn.textContent;
+          btn.textContent = 'Copied!';
           setTimeout(() => {
-            if (this.copyBtn) this.copyBtn.textContent = originalText;
+            if (btn) btn.textContent = originalText;
           }, 2000);
         }
       } else {
@@ -1443,20 +1486,30 @@ ${stops.map((stop, index) => {
    */
   initializeTheme() {
     try {
-      // Load saved theme or detect system preference
-      let savedTheme = localStorage.getItem('gradient-theme');
-      
-      if (!savedTheme) {
-        savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const applyTheme = (mode) => {
+        localStorage.setItem('gradient-theme-mode', mode);
+        if (mode === 'system') {
+          localStorage.removeItem('gradient-theme');
+          const systemDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          this.setTheme(systemDark ? 'dark' : 'light');
+        } else {
+          localStorage.setItem('gradient-theme', mode);
+          this.setTheme(mode);
+        }
+      };
+
+      if (this.themeSelect) {
+        const savedMode = localStorage.getItem('gradient-theme-mode') || 'system';
+        this.themeSelect.value = savedMode;
+        applyTheme(savedMode);
+        this.themeSelect.addEventListener('change', (e) => applyTheme(e.target.value));
       }
-      
-      this.setTheme(savedTheme);
-      
-      // Listen for system theme changes
+
       if (window.matchMedia) {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          if (!localStorage.getItem('gradient-theme')) {
-            this.setTheme(e.matches ? 'dark' : 'light');
+        const mq = window.matchMedia('(prefers-color-scheme: dark)');
+        mq.addEventListener('change', (e) => {
+          if ((localStorage.getItem('gradient-theme-mode') || 'system') === 'system') {
+            applyTheme('system');
           }
         });
       }
@@ -1480,6 +1533,13 @@ ${stops.map((stop, index) => {
         this.darkModeBtn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
       }
       
+      if (this.themeSelect) {
+        const mode = localStorage.getItem('gradient-theme-mode');
+        if (mode !== 'system') {
+          this.themeSelect.value = theme;
+        }
+      }
+
       // Save preference
       try {
         localStorage.setItem('gradient-theme', theme);
