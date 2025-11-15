@@ -831,6 +831,10 @@ legend {
 /* ===== RESPONSIVE DESIGN ===== */
 
 @media (max-width: 768px) {
+  .skip-link {
+    display: none;
+  }
+
   body {
     padding: var(--spacing-sm);
   }
