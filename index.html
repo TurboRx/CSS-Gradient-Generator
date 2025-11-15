@@ -32,15 +32,13 @@
     </div>
     <section class="theme-section" aria-labelledby="theme-heading">
       <h2 id="theme-heading" class="visually-hidden">Theme Settings</h2>
-      <div id="theme-toggle" role="group" aria-label="Theme selection">
-        <button id="light-mode" type="button" class="btn btn-outline" aria-pressed="true">
-          <span class="material-icons" aria-hidden="true">light_mode</span>
-          Light
-        </button>
-        <button id="dark-mode" type="button" class="btn btn-outline" aria-pressed="false">
-          <span class="material-icons" aria-hidden="true">dark_mode</span>
-          Dark
-        </button>
+      <div class="form-group">
+        <label for="theme-select">Theme:</label>
+        <select id="theme-select">
+          <option value="system">System</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
       </div>
     </section>
   </header>
@@ -231,7 +229,5 @@
   <script src="scripts/utils.js"></script>
   <script src="scripts/gradientPresets.js"></script>
   <script src="scripts/gradientGenerator.js"></script>
-  <script src="scripts/patches/themeAndStopsPatch.js"></script>
-  <script src="scripts/patches/forceThemeSelector.js"></script>
 </body>
 </html>

@@ -156,10 +156,10 @@
       checkDOMElements() {
         const criticalElements = [
           '#gradient-preview',
-          '#gradientType', 
+          '#gradientType',
           '#colorStops',
           '#css-code',
-          '#theme-toggle'
+          '#theme-select'
         ];
         
         return fetch('index.html')
@@ -181,13 +181,10 @@
         return fetch('index.html')
           .then(response => response.text())
           .then(html => {
-            const hasLightButton = html.includes('id="light-mode"');
-            const hasDarkButton = html.includes('id="dark-mode"');
-            
-            if (hasLightButton && hasDarkButton) {
-              return 'Theme toggle buttons properly configured';
+            if (html.includes('id="theme-select"')) {
+              return 'Theme select dropdown properly configured';
             }
-            throw new Error('Theme toggle buttons not found or incorrectly configured');
+            throw new Error('Theme select dropdown not found or incorrectly configured');
           });
       }
       

@@ -75,8 +75,7 @@ class GradientGenerator {
     this.shareBtn = document.getElementById('shareGradient');
     
     // Theme controls
-    this.lightModeBtn = document.getElementById('light-mode');
-    this.darkModeBtn = document.getElementById('dark-mode');
+    this.themeSelect = document.getElementById('theme-select');
     
     // Presets container
     this.presetsContainer = document.getElementById('presetGradients');
@@ -196,9 +195,6 @@ class GradientGenerator {
       if (this.downloadBtn) this.downloadBtn.addEventListener('click', () => this.downloadCode());
       if (this.shareBtn) this.shareBtn.addEventListener('click', () => this.shareGradient());
       
-      // Theme controls
-      if (this.lightModeBtn) this.lightModeBtn.addEventListener('click', () => this.setTheme('light'));
-      if (this.darkModeBtn) this.darkModeBtn.addEventListener('click', () => this.setTheme('dark'));
       
       // Keyboard shortcuts
       document.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
@@ -351,12 +347,32 @@ class GradientGenerator {
   }
 
   /**
+   * Validate and normalize color stops
+   * @param {Array} stops - Array of color stop objects
+   * @returns {Array} Validated array of color stop objects
+   */
+  validateColorStops(stops) {
+    if (!Array.isArray(stops)) return [];
+    const adjusted = stops.map(s => ({
+      color: (s && s.color) || '#000000',
+      position: (s && typeof s.position === 'number') ? Math.max(0, Math.min(100, s.position)) : null
+    }));
+    for (let i = 1; i < adjusted.length; i++) {
+      if (adjusted[i].position !== null && adjusted[i-1].position !== null) {
+        if (adjusted[i].position <= adjusted[i-1].position) {
+          adjusted[i].position = Math.min(100, adjusted[i-1].position + 0.1);
+        }
+      }
+    }
+    return adjusted;
+  }
+
+  /**
    * Get current color stops with validation
    * @returns {Array} Array of color stop objects
    */
   getColorStops() {
     const stops = [];
-    
     if (!this.colorStops) return stops;
     
     const stopElements = this.colorStops.querySelectorAll('.color-stop');
@@ -368,23 +384,22 @@ class GradientGenerator {
       if (colorInput) {
         const color = colorInput.value;
         const position = positionInput && positionInput.value !== '' ? parseFloat(positionInput.value) : null;
-        
-        // Validate color value
-        if (color && color.match(/^#[0-9A-Fa-f]{6}$/)) {
-          stops.push({ color, position });
-        }
+        stops.push({ color, position });
       }
     });
-    
-    // Ensure at least 2 color stops
-    if (stops.length < 2) {
-      return [
+
+    const filtered = stops.filter(s => s.color && s.color.match(/^#[0-9A-Fa-f]{6}$/));
+    const limited = filtered.slice(0, 10);
+    const validated = this.validateColorStops(limited);
+
+    if (validated.length < 2) {
+      return this.validateColorStops([
         { color: '#ff0000', position: null },
         { color: '#0000ff', position: null }
-      ];
+      ]);
     }
-    
-    return stops;
+
+    return validated;
   }
 
   /**
@@ -420,6 +435,12 @@ class GradientGenerator {
   addColorStop() {
     try {
       if (!this.colorStops) return;
+
+      const stopCount = this.colorStops.querySelectorAll('.color-stop').length;
+      if (stopCount >= 10) {
+        this.showWarning('Maximum 10 color stops allowed for performance.');
+        return;
+      }
       
       const stopElement = document.createElement('div');
       stopElement.className = 'color-stop';
@@ -801,7 +822,6 @@ class GradientGenerator {
       
       if (type.includes('linear')) {
         const angle = this.angle ? parseFloat(this.angle.value) || 0 : 0;
-        // Convert angle to SVG coordinates
         const rad = (angle - 90) * Math.PI / 180;
         const x2 = 50 + 50 * Math.cos(rad);
         const y2 = 50 + 50 * Math.sin(rad);
@@ -816,7 +836,6 @@ ${stops.map((stop, index) => {
 }).join('\n')}
     </linearGradient>`;
       } else {
-        // Radial gradient fallback
         gradientElement = `
     <radialGradient id="grad" cx="50%" cy="50%" r="50%">
 ${stops.map((stop, index) => {
@@ -833,7 +852,7 @@ ${stops.map((stop, index) => {
 </svg>`;
     } catch (error) {
       console.error('Error generating SVG:', error);
-      return '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#ff0000" /></svg>';
+      return '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#888" /></svg>';
     }
   }
 
@@ -1443,55 +1462,56 @@ ${stops.map((stop, index) => {
    */
   initializeTheme() {
     try {
-      // Load saved theme or detect system preference
-      let savedTheme = localStorage.getItem('gradient-theme');
-      
-      if (!savedTheme) {
-        savedTheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      const savedThemeMode = localStorage.getItem('gradient-theme-mode') || 'system';
+      if (this.themeSelect) {
+        this.themeSelect.value = savedThemeMode;
+        this.themeSelect.addEventListener('change', (e) => this.setTheme(e.target.value));
       }
-      
-      this.setTheme(savedTheme);
-      
-      // Listen for system theme changes
+
+      this.applyTheme(savedThemeMode);
+
       if (window.matchMedia) {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-          if (!localStorage.getItem('gradient-theme')) {
-            this.setTheme(e.matches ? 'dark' : 'light');
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+          if ((localStorage.getItem('gradient-theme-mode') || 'system') === 'system') {
+            this.applyTheme('system');
           }
         });
       }
     } catch (error) {
       console.error('Error initializing theme:', error);
-      this.setTheme('light'); // Fallback to light theme
+      this.applyTheme('light');
     }
   }
 
   /**
-   * Set application theme
-   * @param {string} theme - Theme name ('light' or 'dark')
+   * Set and save application theme mode
+   * @param {string} mode - Theme mode ('system', 'light', or 'dark')
    */
-  setTheme(theme) {
+  setTheme(mode) {
     try {
-      document.documentElement.setAttribute('data-theme', theme);
-      
-      // Update button states
-      if (this.lightModeBtn && this.darkModeBtn) {
-        this.lightModeBtn.setAttribute('aria-pressed', theme === 'light' ? 'true' : 'false');
-        this.darkModeBtn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+      localStorage.setItem('gradient-theme-mode', mode);
+      this.applyTheme(mode);
+      if (typeof Utils !== 'undefined' && Utils.showToast) {
+        Utils.showToast(`Theme changed to ${mode}`, 'info', 1500);
       }
-      
-      // Save preference
-      try {
-        localStorage.setItem('gradient-theme', theme);
-      } catch (e) {
-        console.warn('Could not save theme preference:', e);
-      }
-      
-      // Update body class for backwards compatibility
-      document.body.classList.toggle('dark-mode', theme === 'dark');
     } catch (error) {
       console.error('Error setting theme:', error);
     }
+  }
+
+  /**
+   * Apply application theme
+   * @param {string} mode - Theme mode ('system', 'light', or 'dark')
+   */
+  applyTheme(mode) {
+    let theme;
+    if (mode === 'system') {
+      theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    } else {
+      theme = mode;
+    }
+    document.documentElement.setAttribute('data-theme', theme);
+    document.body.classList.toggle('dark-mode', theme === 'dark');
   }
 
   /**
