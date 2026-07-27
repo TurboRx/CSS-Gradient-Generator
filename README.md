@@ -27,11 +27,12 @@ To verify all functionality works correctly, visit: [test.html](https://turborx.
 
 - **Live gradient preview** with real-time updates
 - **Multiple gradient types**: Linear, Radial, Conic, and Repeating variants
+- **Reverse Colors button**: Swap stop order instantly with one click
 - **Drag & drop color stops** with dynamic positioning
 - **Dark and light theme toggle** with system preference detection
 - **Random gradient generator** for inspiration
 - **Undo/Redo functionality** with complete history
-- **Multiple export formats**: CSS, SCSS, JSON, SVG
+- **Multiple export formats**: CSS, Tailwind CSS, SCSS, JSON, SVG
 - **Copy-to-clipboard** functionality
 - **Share gradients** via URL
 - **Preset gradients** collection

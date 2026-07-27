@@ -66,6 +66,7 @@ class GradientGenerator {
     this.randomBtn = document.getElementById('randomDesign');
     this.undoBtn = document.getElementById('undoBtn');
     this.redoBtn = document.getElementById('redoBtn');
+    this.reverseBtn = document.getElementById('reverseColors');
     this.resetBtn = document.getElementById('resetBtn');
     
     // Export controls
@@ -187,6 +188,7 @@ class GradientGenerator {
       if (this.randomBtn) this.randomBtn.addEventListener('click', () => this.generateRandomGradient());
       if (this.undoBtn) this.undoBtn.addEventListener('click', () => this.undo());
       if (this.redoBtn) this.redoBtn.addEventListener('click', () => this.redo());
+      if (this.reverseBtn) this.reverseBtn.addEventListener('click', () => this.reverseColors());
       if (this.resetBtn) this.resetBtn.addEventListener('click', () => this.resetGradient());
       
       // Export controls
@@ -681,6 +683,31 @@ class GradientGenerator {
   }
 
   /**
+   * Reverse color stops order
+   */
+  reverseColors() {
+    try {
+      const currentState = this.getCurrentState();
+      if (!currentState.colors || currentState.colors.length < 2) return;
+      
+      const reversedColors = [...currentState.colors].reverse();
+      this.restoreState({
+        ...currentState,
+        colors: reversedColors
+      });
+      
+      this.debouncedGenerate();
+      this.saveToHistory();
+      
+      if (typeof gradientToasts !== 'undefined' && gradientToasts.info) {
+        gradientToasts.info('Reversed color stops');
+      }
+    } catch (error) {
+      console.error('Error reversing color stops:', error);
+    }
+  }
+
+  /**
    * Apply gradient preset with error handling
    * SHOW TOAST for preset selections as per requirements
    * @param {Object} preset - Preset configuration
@@ -774,6 +801,9 @@ class GradientGenerator {
       switch (format) {
         case 'css':
           code = `background-image: ${gradient};`;
+          break;
+        case 'tailwind':
+          code = `bg-[${gradient.replace(/\s+/g, '_')}]`;
           break;
         case 'scss':
           code = `$gradient: ${gradient};\nbackground-image: $gradient;`;
@@ -941,6 +971,7 @@ ${stops.map((stop, index) => {
       
       const extensions = {
         css: 'css',
+        tailwind: 'txt',
         scss: 'scss',
         json: 'json',
         svg: 'svg'
@@ -948,6 +979,7 @@ ${stops.map((stop, index) => {
       
       const mimeTypes = {
         css: 'text/css',
+        tailwind: 'text/plain',
         scss: 'text/scss',
         json: 'application/json',
         svg: 'image/svg+xml'
