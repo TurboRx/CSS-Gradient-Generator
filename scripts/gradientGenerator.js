@@ -22,13 +22,6 @@ class GradientGenerator {
     // Load state and generate initial gradient
     this.loadStateFromURL();
     this.generateGradient();
-    
-    // Show welcome message after a delay (only if toast system available)
-    setTimeout(() => {
-      if (typeof gradientToasts !== 'undefined') {
-        gradientToasts.welcome();
-      }
-    }, 1000);
   }
 
   /**

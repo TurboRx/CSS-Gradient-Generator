@@ -1,6 +1,5 @@
 /**
- * Toast Notification System for CSS Gradient Generator
- * Provides user feedback for key actions only
+ * Toast Notification Utility
  */
 
 class ToastManager {
@@ -99,7 +98,6 @@ class ToastManager {
 
     escapeHtml(text){const div=document.createElement('div');div.textContent=text;return div.innerHTML}
 
-    // Convenience
     success(title,message,opts={}){return this.show({...opts,title,message,type:'success'})}
     error(title,message,opts={}){return this.show({...opts,title,message,type:'error',duration:4000})}
     warning(title,message,opts={}){return this.show({...opts,title,message,type:'warning',duration:3000})}
@@ -127,10 +125,5 @@ window.gradientToasts={
     gradientError:()=>toast.error('Gradient Error','Unable to generate gradient'),
     fileError:(operation)=>toast.error('File Error',`Failed to ${operation} file`),
     compatibilityWarning:(feature)=>toast.warning('Compatibility',`${feature} may not be supported in all browsers`),
-    welcome:()=>{const seen=localStorage.getItem('gradient-generator-welcome');if(!seen){toast.info('Welcome!','Create beautiful CSS gradients with live preview',{duration:3000});localStorage.setItem('gradient-generator-welcome','true')}}
+    welcome:()=>{}
 };
-
-// Only toastNotifications triggers welcome; do not duplicate in generator
-if(document.readyState==='loading'){
-    document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>gradientToasts.welcome(),1000));
-}else{setTimeout(()=>gradientToasts.welcome(),1000)}
