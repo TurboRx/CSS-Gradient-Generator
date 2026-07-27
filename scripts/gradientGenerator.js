@@ -70,6 +70,17 @@ class GradientGenerator {
     this.reverseBtn = document.getElementById('reverseColors');
     this.resetBtn = document.getElementById('resetBtn');
     
+    // Color Space Interpolation
+    this.colorSpace = document.getElementById('colorSpace');
+    
+    // Harmony mode
+    this.harmonyMode = document.getElementById('harmonyMode');
+
+    // Image Extractor
+    this.imageInput = document.getElementById('imageInput');
+    this.triggerImageUpload = document.getElementById('triggerImageUpload');
+    this.imageDropzone = document.getElementById('imageDropzone');
+
     // Export controls
     this.exportFormat = document.getElementById('exportFormat');
     this.copyBtn = document.getElementById('copyCode');
@@ -192,6 +203,35 @@ class GradientGenerator {
       if (this.reverseBtn) this.reverseBtn.addEventListener('click', () => this.reverseColors());
       if (this.resetBtn) this.resetBtn.addEventListener('click', () => this.resetGradient());
       
+      if (this.colorSpace) {
+        this.colorSpace.addEventListener('change', () => {
+          this.debouncedGenerate();
+          this.saveToHistory();
+        });
+      }
+
+      if (this.triggerImageUpload && this.imageInput) {
+        this.triggerImageUpload.addEventListener('click', () => this.imageInput.click());
+        this.imageInput.addEventListener('change', (e) => this.handleImageUpload(e));
+      }
+
+      if (this.imageDropzone) {
+        this.imageDropzone.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          this.imageDropzone.classList.add('drag-over');
+        });
+        this.imageDropzone.addEventListener('dragleave', () => {
+          this.imageDropzone.classList.remove('drag-over');
+        });
+        this.imageDropzone.addEventListener('drop', (e) => {
+          e.preventDefault();
+          this.imageDropzone.classList.remove('drag-over');
+          if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+            this.processImageFile(e.dataTransfer.files[0]);
+          }
+        });
+      }
+
       // Export controls
       if (this.exportFormat) this.exportFormat.addEventListener('change', () => this.updateExportCode());
       if (this.copyBtn) this.copyBtn.addEventListener('click', () => this.copyCode());
@@ -309,7 +349,8 @@ class GradientGenerator {
   buildGradientCSS() {
     try {
       const type = this.gradientType ? this.gradientType.value : 'linear-gradient';
-      let gradient = `${type}(`;
+      const space = (this.colorSpace && this.colorSpace.value !== 'none') ? `${this.colorSpace.value} ` : '';
+      let gradient = `${type}(${space}`;
       
       // Add gradient-specific parameters
       if (type.includes('linear')) {
@@ -616,11 +657,13 @@ class GradientGenerator {
         this.colorStops.innerHTML = '';
       }
       
-      // Generate random number of color stops (2-6)
-      const numStops = Math.floor(Math.random() * 5) + 2;
+      // Generate random color stops using chosen harmony mode
+      const harmonyModeVal = this.harmonyMode ? this.harmonyMode.value : 'vibrant';
+      const numStops = Math.floor(Math.random() * 3) + 2; // 2-4 color stops
+      const harmonyColors = this.getHarmonyColors(harmonyModeVal, numStops);
       
       for (let i = 0; i < numStops; i++) {
-        const color = this.getRandomColor();
+        const color = harmonyColors[i] || this.getRandomColor();
         let position = '';
         
         // Set positions for first and last stops
@@ -806,6 +849,35 @@ class GradientGenerator {
         case 'tailwind':
           code = `bg-[${gradient.replace(/\s*,\s*/g, ',').replace(/\s+/g, '_')}]`;
           break;
+        case 'flutter': {
+          const stops = this.getColorStops();
+          const colorsStr = stops.map(s => `Color(0xFF${s.color.replace('#', '').toUpperCase()})`).join(', ');
+          code = `LinearGradient(\n  begin: Alignment.topLeft,\n  end: Alignment.bottomRight,\n  colors: [${colorsStr}],\n)`;
+          break;
+        }
+        case 'react-native': {
+          const stops = this.getColorStops();
+          const colorsStr = stops.map(s => `'${s.color}'`).join(', ');
+          code = `<LinearGradient\n  colors={[${colorsStr}]}\n  start={{ x: 0, y: 0 }}\n  end={{ x: 1, y: 1 }}\n/>`;
+          break;
+        }
+        case 'swiftui': {
+          const stops = this.getColorStops();
+          const colorsStr = stops.map(s => `Color(hex: "${s.color}")`).join(', ');
+          code = `LinearGradient(\n  gradient: Gradient(colors: [${colorsStr}]),\n  startPoint: .topLeading,\n  endPoint: .bottomTrailing\n)`;
+          break;
+        }
+        case 'canvas': {
+          const stops = this.getColorStops();
+          let canvasCode = `const gradient = ctx.createLinearGradient(0, 0, width, height);\n`;
+          stops.forEach((s, idx) => {
+            const offset = (s.position !== null && !isNaN(s.position) ? s.position : (idx / Math.max(1, stops.length - 1)) * 100) / 100;
+            canvasCode += `gradient.addColorStop(${offset.toFixed(2)}, '${s.color}');\n`;
+          });
+          canvasCode += `ctx.fillStyle = gradient;\nctx.fillRect(0, 0, width, height);`;
+          code = canvasCode;
+          break;
+        }
         case 'scss':
           code = `$gradient: ${gradient};\nbackground-image: $gradient;`;
           break;
@@ -1592,6 +1664,103 @@ ${stops.map((stop, index) => {
       const val = btn.getAttribute('data-theme-val');
       btn.setAttribute('data-active', val === activeMode ? 'true' : 'false');
     });
+  }
+
+  hslToHex(h, s, l) {
+    l /= 100;
+    const a = (s * Math.min(l, 1 - l)) / 100;
+    const f = n => {
+      const k = (n + h / 30) % 12;
+      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  getHarmonyColors(mode, count) {
+    const baseHue = Math.floor(Math.random() * 360);
+    const colors = [];
+
+    for (let i = 0; i < count; i++) {
+      let h = baseHue;
+      let s = 80;
+      let l = 50;
+
+      if (mode === 'analogous') {
+        h = (baseHue + (i * 35)) % 360;
+        s = 75 + Math.floor(Math.random() * 20);
+        l = 45 + Math.floor(Math.random() * 15);
+      } else if (mode === 'complementary') {
+        h = (baseHue + (i % 2 === 0 ? 0 : 180) + Math.floor(Math.random() * 25 - 12)) % 360;
+        s = 80 + Math.floor(Math.random() * 20);
+        l = 50 + Math.floor(Math.random() * 15);
+      } else if (mode === 'pastel') {
+        h = (baseHue + (i * 45)) % 360;
+        s = 65 + Math.floor(Math.random() * 20);
+        l = 75 + Math.floor(Math.random() * 15);
+      } else if (mode === 'monochromatic') {
+        h = baseHue;
+        s = 70 + Math.floor(Math.random() * 20);
+        l = Math.floor(25 + (i / Math.max(1, count - 1)) * 55);
+      } else if (mode === 'vibrant') {
+        h = (baseHue + (i * 60)) % 360;
+        s = 90 + Math.floor(Math.random() * 10);
+        l = 50 + Math.floor(Math.random() * 15);
+      } else {
+        h = Math.floor(Math.random() * 360);
+        s = 70 + Math.floor(Math.random() * 30);
+        l = 40 + Math.floor(Math.random() * 30);
+      }
+      if (h < 0) h += 360;
+      colors.push(this.hslToHex(h, s, l));
+    }
+    return colors;
+  }
+
+  handleImageUpload(e) {
+    if (e.target && e.target.files && e.target.files[0]) {
+      this.processImageFile(e.target.files[0]);
+    }
+  }
+
+  processImageFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 64;
+        canvas.height = 64;
+        ctx.drawImage(img, 0, 0, 64, 64);
+        const imgData = ctx.getImageData(0, 0, 64, 64).data;
+        
+        const samples = [
+          ((16 * 64) + 16) * 4,
+          ((32 * 64) + 32) * 4,
+          ((48 * 64) + 48) * 4
+        ];
+
+        const extractedColors = samples.map((offset, idx) => {
+          const r = imgData[offset].toString(16).padStart(2, '0');
+          const g = imgData[offset + 1].toString(16).padStart(2, '0');
+          const b = imgData[offset + 2].toString(16).padStart(2, '0');
+          const pos = Math.round((idx / (samples.length - 1)) * 100);
+          return { color: `#${r}${g}${b}`, position: pos };
+        });
+
+        const currentState = this.getCurrentState();
+        this.restoreState({
+          ...currentState,
+          colors: extractedColors
+        });
+        this.debouncedGenerate();
+        this.saveToHistory();
+      };
+      img.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
   /**

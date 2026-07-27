@@ -523,6 +523,40 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: var(--spacing-xl);
 }
 
+.harmony-select {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.image-extractor-fieldset {
+  margin-top: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.image-dropzone {
+  border: 2px dashed var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  text-align: center;
+  background: var(--bg-primary);
+  transition: all var(--transition-fast);
+}
+
+.image-dropzone.drag-over {
+  border-color: var(--accent-primary);
+  background: rgba(0, 112, 243, 0.08);
+}
+
+.image-dropzone button {
+  margin-bottom: 0.5rem;
+}
+
 #controls {
   background: var(--bg-secondary);
   padding: var(--spacing-xl);

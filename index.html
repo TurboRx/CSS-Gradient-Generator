@@ -140,6 +140,14 @@
           <span class="material-icons" aria-hidden="true">casino</span>
           Random Design
         </button>
+        <select id="harmonyMode" class="harmony-select" aria-label="Random Color Harmony Mode">
+          <option value="vibrant">Vibrant Mode</option>
+          <option value="analogous">Analogous Harmony</option>
+          <option value="complementary">Complementary</option>
+          <option value="pastel">Soft Pastel</option>
+          <option value="monochromatic">Monochromatic</option>
+          <option value="random">Full Random</option>
+        </select>
         <button id="undoBtn" type="button" class="btn btn-secondary" disabled>
           <span class="material-icons" aria-hidden="true">undo</span>
           Undo
@@ -255,6 +263,30 @@
           </button>
         </fieldset>
 
+        <div class="form-group">
+          <label for="colorSpace">Color Space Interpolation (CSS Level 4):</label>
+          <select id="colorSpace" aria-describedby="color-space-help">
+            <option value="none">Standard sRGB (Default)</option>
+            <option value="in oklch">OKLCH (Ultra-Vibrant, No Gray Zones)</option>
+            <option value="in lab">LAB (Perceptually Uniform)</option>
+            <option value="in hsl">HSL (Hue Circle Interpolation)</option>
+            <option value="in hwb">HWB (Whiteness & Blackness)</option>
+          </select>
+          <small id="color-space-help">Select color space for ultra-smooth gradient transitions without muddy gray colors</small>
+        </div>
+
+        <fieldset class="image-extractor-fieldset">
+          <legend>Image to Gradient Palette</legend>
+          <div class="image-dropzone" id="imageDropzone">
+            <input type="file" id="imageInput" accept="image/*" class="visually-hidden" />
+            <button type="button" id="triggerImageUpload" class="btn btn-outline">
+              <span class="material-icons" aria-hidden="true">add_photo_alternate</span>
+              Upload Image to Extract Palette
+            </button>
+            <small>Detect dominant colors from any photo or screenshot into gradient color stops</small>
+          </div>
+        </fieldset>
+
         <fieldset class="presets-fieldset">
           <legend>Preset Gradients</legend>
           <div id="presetGradients" class="preset-grid" role="group" aria-label="Preset gradient options"></div>
@@ -267,6 +299,10 @@
             <select id="exportFormat">
               <option value="css">CSS</option>
               <option value="tailwind">Tailwind CSS</option>
+              <option value="flutter">Flutter (Dart)</option>
+              <option value="react-native">React Native</option>
+              <option value="swiftui">SwiftUI (iOS/macOS)</option>
+              <option value="canvas">HTML5 Canvas 2D</option>
               <option value="scss">SCSS</option>
               <option value="json">JSON</option>
               <option value="svg">SVG</option>
