@@ -93,6 +93,7 @@
         this.addTest('Material Icons loaded', () => this.checkMaterialIcons());
         this.addTest('Critical DOM elements', () => this.checkDOMElements());
         this.addTest('Theme toggle buttons', () => this.checkThemeButtons());
+        this.addTest('Hamburger navigation menu', () => this.checkHamburgerMenu());
         this.addTest('Form controls', () => this.checkFormControls());
         this.addTest('Color stops container', () => this.checkColorStops());
         
@@ -181,10 +182,21 @@
         return fetch('index.html')
           .then(response => response.text())
           .then(html => {
-            if (html.includes('id="theme-select"')) {
-              return 'Theme select dropdown properly configured';
+            if (html.includes('id="theme-select"') && html.includes('theme-pill-btn')) {
+              return 'Theme select dropdown & pill buttons properly configured';
             }
-            throw new Error('Theme select dropdown not found or incorrectly configured');
+            throw new Error('Theme controls not found or incorrectly configured');
+          });
+      }
+      
+      checkHamburgerMenu() {
+        return fetch('index.html')
+          .then(response => response.text())
+          .then(html => {
+            if (html.includes('id="hamburger-menu"') && html.includes('id="mobile-nav"')) {
+              return 'Hamburger menu & mobile navigation drawer properly configured';
+            }
+            throw new Error('Hamburger menu or mobile navigation drawer missing');
           });
       }
       

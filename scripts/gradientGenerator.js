@@ -17,6 +17,7 @@ class GradientGenerator {
     this.initializeEventListeners();
     this.initializePresets();
     this.initializeTheme();
+    this.initializeHamburgerMenu();
     
     // Load state and generate initial gradient
     this.loadStateFromURL();
@@ -1500,6 +1501,15 @@ ${stops.map((stop, index) => {
         this.themeSelect.addEventListener('change', (e) => this.setTheme(e.target.value));
       }
 
+      // Bind theme pill buttons
+      const themePillBtns = document.querySelectorAll('.theme-pill-btn');
+      themePillBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mode = btn.getAttribute('data-theme-val');
+          if (mode) this.setTheme(mode);
+        });
+      });
+
       this.applyTheme(savedThemeMode);
 
       if (window.matchMedia) {
@@ -1516,12 +1526,48 @@ ${stops.map((stop, index) => {
   }
 
   /**
+   * Initialize hamburger menu for mobile navigation
+   */
+  initializeHamburgerMenu() {
+    try {
+      const hamburgerBtn = document.getElementById('hamburger-menu');
+      const mobileNav = document.getElementById('mobile-nav');
+      if (!hamburgerBtn || !mobileNav) return;
+
+      const toggleMenu = () => {
+        const isOpen = hamburgerBtn.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        mobileNav.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+      };
+
+      hamburgerBtn.addEventListener('click', toggleMenu);
+
+      // Close mobile menu when clicking a link inside it
+      const mobileLinks = mobileNav.querySelectorAll('.mobile-link');
+      mobileLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          hamburgerBtn.classList.remove('active');
+          mobileNav.classList.remove('active');
+          hamburgerBtn.setAttribute('aria-expanded', 'false');
+          mobileNav.setAttribute('aria-hidden', 'true');
+        });
+      });
+    } catch (error) {
+      console.error('Error initializing hamburger menu:', error);
+    }
+  }
+
+  /**
    * Set and save application theme mode
    * @param {string} mode - Theme mode ('system', 'light', or 'dark')
    */
   setTheme(mode) {
     try {
       localStorage.setItem('gradient-theme-mode', mode);
+      if (this.themeSelect) {
+        this.themeSelect.value = mode;
+      }
       this.applyTheme(mode);
       if (typeof Utils !== 'undefined' && Utils.showToast) {
         Utils.showToast(`Theme changed to ${mode}`, 'info', 1500);
@@ -1544,6 +1590,14 @@ ${stops.map((stop, index) => {
     }
     document.documentElement.setAttribute('data-theme', theme);
     document.body.classList.toggle('dark-mode', theme === 'dark');
+
+    // Update active pill UI buttons
+    const activeMode = localStorage.getItem('gradient-theme-mode') || 'system';
+    const themePillBtns = document.querySelectorAll('.theme-pill-btn');
+    themePillBtns.forEach(btn => {
+      const val = btn.getAttribute('data-theme-val');
+      btn.setAttribute('data-active', val === activeMode ? 'true' : 'false');
+    });
   }
 
   /**

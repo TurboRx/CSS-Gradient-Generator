@@ -26,21 +26,94 @@
   <a href="#main-content" class="skip-link">Skip to main content</a>
   
   <header class="site-header">
-    <div>
-      <h1 class="title">CSS Gradient Generator</h1>
-      <p class="subtitle">Create beautiful CSS gradients with live preview and instant code generation</p>
-    </div>
-    <section class="theme-section" aria-labelledby="theme-heading">
-      <h2 id="theme-heading" class="visually-hidden">Theme Settings</h2>
-      <div class="form-group">
-        <label for="theme-select">Theme:</label>
-        <select id="theme-select">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 100 100" class="logo-svg" width="36" height="36">
+            <defs>
+              <linearGradient id="logo-g" x1="0" y1="0" x2="100" y2="100">
+                <stop offset="0%" stop-color="#ff0080"/>
+                <stop offset="100%" stop-color="#7928ca"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" rx="24" fill="url(#logo-g)"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1 class="title">CSS Gradient Generator</h1>
+          <span class="version-badge">v2.2 Pro</span>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <a href="#main-content" class="nav-link">Generator</a>
+        <a href="#controls-heading" class="nav-link">Controls</a>
+        <a href="#presetGradients" class="nav-link">Presets</a>
+        <a href="https://github.com/TurboRx/CSS-Gradient-Generator" target="_blank" rel="noopener noreferrer" class="nav-link github-link">
+          <span class="material-icons" aria-hidden="true">code</span> GitHub
+        </a>
+      </nav>
+
+      <!-- Theme Switcher Pills -->
+      <div class="theme-switcher-wrapper">
+        <div class="theme-pill-group" role="group" aria-label="Theme mode switcher">
+          <button type="button" class="theme-pill-btn" data-theme-val="light" title="Light Theme" aria-label="Light Theme">
+            <span class="material-icons" aria-hidden="true">light_mode</span>
+          </button>
+          <button type="button" class="theme-pill-btn" data-theme-val="dark" title="Dark Theme" aria-label="Dark Theme">
+            <span class="material-icons" aria-hidden="true">dark_mode</span>
+          </button>
+          <button type="button" class="theme-pill-btn" data-theme-val="system" title="System Theme" aria-label="System Theme">
+            <span class="material-icons" aria-hidden="true">desktop_windows</span>
+          </button>
+        </div>
+        <select id="theme-select" class="visually-hidden">
           <option value="system">System</option>
           <option value="light">Light</option>
           <option value="dark">Dark</option>
         </select>
       </div>
-    </section>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="hamburger-menu" class="hamburger-btn" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Drawer Nav -->
+    <div id="mobile-nav" class="mobile-nav-drawer" aria-hidden="true">
+      <nav aria-label="Mobile Navigation">
+        <a href="#main-content" class="mobile-link">
+          <span class="material-icons" aria-hidden="true">tune</span> Generator
+        </a>
+        <a href="#controls-heading" class="mobile-link">
+          <span class="material-icons" aria-hidden="true">settings</span> Controls
+        </a>
+        <a href="#presetGradients" class="mobile-link">
+          <span class="material-icons" aria-hidden="true">style</span> Presets
+        </a>
+        <a href="https://github.com/TurboRx/CSS-Gradient-Generator" target="_blank" rel="noopener noreferrer" class="mobile-link">
+          <span class="material-icons" aria-hidden="true">code</span> View on GitHub
+        </a>
+      </nav>
+      <div class="mobile-theme-row">
+        <span class="mobile-theme-label">Appearance</span>
+        <div class="theme-pill-group mobile-theme-group" role="group" aria-label="Mobile theme switcher">
+          <button type="button" class="theme-pill-btn" data-theme-val="light">
+            <span class="material-icons" aria-hidden="true">light_mode</span> Light
+          </button>
+          <button type="button" class="theme-pill-btn" data-theme-val="dark">
+            <span class="material-icons" aria-hidden="true">dark_mode</span> Dark
+          </button>
+          <button type="button" class="theme-pill-btn" data-theme-val="system">
+            <span class="material-icons" aria-hidden="true">desktop_windows</span> System
+          </button>
+        </div>
+      </div>
+    </div>
   </header>
 
   <main id="main-content">
