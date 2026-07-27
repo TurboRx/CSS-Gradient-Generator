@@ -1277,9 +1277,8 @@ ${stops.map((stop, index) => {
    */
   resetGradient() {
     try {
-      if (confirm('Are you sure you want to reset the gradient? This action cannot be undone.')) {
-        // Reset to default values
-        if (this.gradientType) this.gradientType.value = 'linear-gradient';
+      // Reset to default values
+      if (this.gradientType) this.gradientType.value = 'linear-gradient';
         if (this.angle) {
           this.angle.value = 45;
           if (this.angleSlider) this.angleSlider.value = 45;
@@ -1325,12 +1324,6 @@ ${stops.map((stop, index) => {
         this.initializeExistingColorStops();
         this.updateControls();
         this.saveToHistory();
-        
-        // SHOW TOAST for reset
-        if (typeof gradientToasts !== 'undefined') {
-          gradientToasts.reset();
-        }
-      }
     } catch (error) {
       console.error('Error resetting gradient:', error);
       if (typeof gradientToasts !== 'undefined') {
