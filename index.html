@@ -20,7 +20,7 @@
   <link rel="stylesheet" href="styles/index.css" />
   
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><defs><linearGradient id=%22g%22 x1=%220%22 y1=%220%22 x2=%22100%22 y2=%22100%22><stop offset=%220%25%22 style=%22stop-color:%23ff0080%22/><stop offset=%22100%25%22 style=%22stop-color:%23ff8c00%22/></linearGradient></defs><rect width=%22100%22 height=%22100%22 fill=%22url(%23g)%22/></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%234F46E5'/><stop offset='50%25' stop-color='%237C3AED'/><stop offset='100%25' stop-color='%2306B6D4'/></linearGradient><linearGradient id='rg' x1='0%25' y1='100%25' x2='100%25' y2='0%25'><stop offset='0%25' stop-color='%23F59E0B'/><stop offset='50%25' stop-color='%23EC4899'/><stop offset='100%25' stop-color='%238B5CF6'/></linearGradient></defs><rect width='100' height='100' rx='26' fill='url(%23bg)'/><path d='M 20 65 Q 40 25 75 35 T 85 75' fill='none' stroke='url(%23rg)' stroke-width='12' stroke-linecap='round'/><circle cx='30' cy='65' r='7' fill='%23F59E0B'/><circle cx='50' cy='38' r='7' fill='%23EC4899'/><circle cx='75' cy='42' r='7' fill='%238B5CF6'/><path d='M 72 20 L 74 26 L 80 28 L 74 30 L 72 36 L 70 30 L 64 28 L 70 26 Z' fill='%23FFFFFF'/></svg>" />
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -29,14 +29,25 @@
     <div class="header-container">
       <div class="brand">
         <div class="brand-logo" aria-hidden="true">
-          <svg viewBox="0 0 100 100" class="logo-svg" width="36" height="36">
+          <svg viewBox="0 0 100 100" class="logo-svg" width="38" height="38" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <linearGradient id="logo-g" x1="0" y1="0" x2="100" y2="100">
-                <stop offset="0%" stop-color="#ff0080"/>
-                <stop offset="100%" stop-color="#7928ca"/>
+              <linearGradient id="logoGradBg" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#4F46E5"/>
+                <stop offset="50%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#06B6D4"/>
+              </linearGradient>
+              <linearGradient id="logoGradRing" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#F59E0B"/>
+                <stop offset="50%" stop-color="#EC4899"/>
+                <stop offset="100%" stop-color="#8B5CF6"/>
               </linearGradient>
             </defs>
-            <rect width="100" height="100" rx="24" fill="url(#logo-g)"/>
+            <rect width="100" height="100" rx="26" fill="url(#logoGradBg)"/>
+            <path d="M 20 65 Q 40 25 75 35 T 85 75" fill="none" stroke="url(#logoGradRing)" stroke-width="12" stroke-linecap="round"/>
+            <circle cx="30" cy="65" r="7" fill="#F59E0B"/>
+            <circle cx="50" cy="38" r="7" fill="#EC4899"/>
+            <circle cx="75" cy="42" r="7" fill="#8B5CF6"/>
+            <path d="M 72 20 L 74 26 L 80 28 L 74 30 L 72 36 L 70 30 L 64 28 L 70 26 Z" fill="#FFFFFF" opacity="0.9"/>
           </svg>
         </div>
         <div class="brand-text">
