@@ -362,8 +362,8 @@ class GradientGenerator {
     }));
     for (let i = 1; i < adjusted.length; i++) {
       if (adjusted[i].position !== null && adjusted[i-1].position !== null) {
-        if (adjusted[i].position <= adjusted[i-1].position) {
-          adjusted[i].position = Math.min(100, adjusted[i-1].position + 0.1);
+        if (adjusted[i].position < adjusted[i-1].position) {
+          adjusted[i].position = Math.min(100, adjusted[i-1].position);
         }
       }
     }
@@ -391,7 +391,7 @@ class GradientGenerator {
       }
     });
 
-    const filtered = stops.filter(s => s.color && s.color.match(/^#[0-9A-Fa-f]{6}$/));
+    const filtered = stops.filter(s => s.color && s.color.match(/^#([0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/));
     const limited = filtered.slice(0, 10);
     const validated = this.validateColorStops(limited);
 
@@ -804,7 +804,7 @@ class GradientGenerator {
           code = `background-image: ${gradient};`;
           break;
         case 'tailwind':
-          code = `bg-[${gradient.replace(/\s+/g, '_')}]`;
+          code = `bg-[${gradient.replace(/\s*,\s*/g, ',').replace(/\s+/g, '_')}]`;
           break;
         case 'scss':
           code = `$gradient: ${gradient};\nbackground-image: $gradient;`;
@@ -1434,12 +1434,13 @@ ${stops.map((stop, index) => {
         try {
           const colorStrings = params.colors.split(',');
           state.colors = colorStrings.map(colorStr => {
-            const [color, position] = colorStr.split('@');
+            const [rawColor, position] = colorStr.split('@');
+            const color = rawColor ? (rawColor.startsWith('#') ? rawColor : '#' + rawColor) : '#ff0000';
             return {
-              color: color || '#ff0000',
+              color,
               position: position && !isNaN(parseFloat(position)) ? parseFloat(position) : null
             };
-          }).filter(c => c.color.match(/^#[0-9A-Fa-f]{6}$/));
+          }).filter(c => c.color && c.color.match(/^#([0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/));
         } catch (e) {
           console.warn('Error parsing colors from URL:', e);
         }

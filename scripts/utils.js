@@ -25,7 +25,7 @@ class Utils {
   }
 
   static isValidHex(color) {
-    return /^#[0-9A-Fa-f]{6}$/.test(color);
+    return /^#([0-9A-Fa-f]{3,4}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/.test(color);
   }
 
   // Clipboard API: permission-aware with fallback
